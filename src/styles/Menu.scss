@@ -1,0 +1,19 @@
+#layout {
+    .site-layout-background {
+        background-color: white;
+        .fix {
+          position: fixed;
+          overflow-y: scroll;
+          height: 100%;
+          &::-webkit-scrollbar{
+              background-color: transparent;
+          }
+          .close{
+              button{
+                  border:none
+              }
+          }
+      }
+    }
+  }
+  
