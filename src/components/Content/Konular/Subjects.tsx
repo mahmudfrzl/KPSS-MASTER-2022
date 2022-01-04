@@ -5,13 +5,14 @@ import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import GeneralStore from "../../../store/GeneralStore";
+import CreateKonu from "./CreateKonu";
 import UpdateKonular from "./UpdateKonular";
 
 const Subjects = () => {
   useEffect(() => {
     GeneralStore.getKonu();
   }, []);
-  console.log(GeneralStore.konular);
+
   return (
     <div>
       <h1>Konular</h1>
@@ -19,8 +20,7 @@ const Subjects = () => {
         <Button
           onClick={() =>
             runInAction(() => {
-              GeneralStore.type = false;
-              GeneralStore.konu_update = true;
+              GeneralStore.konu_create = true;
             })
           }
         >
@@ -30,7 +30,7 @@ const Subjects = () => {
       {GeneralStore.konular && GeneralStore.konular.length > 0 && (
         <Table
           dataSource={GeneralStore.konular}
-          rowKey={(d) => d}
+          rowKey={(d) => d.subjectID}
           columns={[
             { title: "ID", dataIndex: "subjectID" },
             { title: "Ismi", dataIndex: "name" },
@@ -72,6 +72,8 @@ const Subjects = () => {
                         `http://localhost:8080/api/subjects/delete?subjectID=${d.subjectID}`
                       );
                       GeneralStore.getKonu();
+                      GeneralStore.getTestler()
+                      GeneralStore.getNotlar()
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -90,7 +92,7 @@ const Subjects = () => {
                     <Col xs={12}>
                       <Image src={record?.pictureURL} />
                     </Col>
-                    <Col xs={12}>
+                    {/* <Col xs={12}>
                       <h2>Notlar</h2>
                       {record.notes.map((d: any, i: number) => {
                         return (
@@ -113,7 +115,7 @@ const Subjects = () => {
                           </div>
                         );
                       })}
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               );
@@ -123,6 +125,7 @@ const Subjects = () => {
         />
       )}
       <UpdateKonular />
+      <CreateKonu />
     </div>
   );
 };

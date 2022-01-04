@@ -5,11 +5,11 @@ import GeneralStore from "../../../store/GeneralStore";
 import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateNote from "./UpdateNote";
+import CreateNote from "./CreateNote";
 const Note = () => {
   useEffect(() => {
     GeneralStore.getNotlar();
   }, []);
-  console.log(toJS(GeneralStore.type));
   return (
     <div>
       <h1>Notlar</h1>
@@ -17,7 +17,7 @@ const Note = () => {
         <Button
           onClick={() =>
             runInAction(() => {
-              GeneralStore.note_update = true;
+              GeneralStore.create_note = true;
             })
           }
         >
@@ -28,12 +28,16 @@ const Note = () => {
         
         <Table 
           dataSource={GeneralStore.notlar}
-          rowKey={(d) => d}
+          rowKey={(d) => d.noteID}
           columns={[
             { title: "ID", dataIndex: "noteID" },
 
             { title: "Not", dataIndex: "noteDescription" },
             { title: "KonuID", dataIndex: "subjectID" },
+            {
+              title: "Şekilli",
+              render: (d) => <div>{d.hasPicture.toString()}</div>,
+            },
             {
               title: "Silindi",
               render: (d) => <div>{d.deleted.toString()}</div>,
@@ -85,8 +89,8 @@ const Note = () => {
                 <div className="super_content" key={record.id}>
                   <Row>
                     <Col xs={24}>
-                    {record.pictures.map(d=>{
-                        return <Image key={d.pictureID} src={d.url} />
+                    {record?.pictures&&record?.pictures.map((d:any)=>{
+                        return <Image key={d?.pictureID} src={d?.url} />
                     })}    
 
                     </Col>
@@ -99,6 +103,7 @@ const Note = () => {
         />
       )}
       <UpdateNote/>
+      <CreateNote/>
     </div>
   );
 };

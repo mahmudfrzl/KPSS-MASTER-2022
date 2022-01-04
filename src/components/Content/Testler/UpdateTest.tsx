@@ -5,29 +5,28 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
+const UpdateKonular = () => {
+  const [form] = useForm();
+  const updatedData = [
+    { key: "name", label: "İsim" },
+  ];
 
-const UpdateTest = () => {
-    const [form] = useForm();
-    const updatedData = [
-      { key: "subjectID", label: "KonuID" },
-      { key: "name", label: "İsim" }
-    ];
-  
-    useEffect(() => {
+  useEffect(() => {
 
-        form.setFieldsValue({
-          deleted: GeneralStore.test.deleted,
-          subjectID: GeneralStore.test.subjectID,
-          name: GeneralStore.test.name,
-          status: GeneralStore.test.status
-        });
+      form.setFieldsValue({
+        deleted: GeneralStore.test.deleted,
+        subjectID: GeneralStore.test.subjectID,
+        name: GeneralStore.test.name,
+        testID: GeneralStore.test.testID,
+      });
 
-    }, [GeneralStore.test_update]);
-    return (
-        <div>
-             <Drawer
+    
+  }, [GeneralStore.test_update]);
+  return (
+    <div>
+      <Drawer
         width={window.innerWidth / 3}
-        title={"Güncelleme" }
+        title={"Gencelleme"}
         placement="right"
         onClose={() =>
           runInAction(
@@ -37,6 +36,15 @@ const UpdateTest = () => {
         visible={GeneralStore.test_update}
       >
         <Form onFinish={GeneralStore.updateTest} form={form}>
+        <label htmlFor="subjectID">Konu</label>
+        <Form.Item name='subjectID'>
+            <Select>
+              {GeneralStore.konular.map(d=>{
+              return <Option value={d.testID} key={d.subjectID}>{d.subjectID} - {d.name}</Option>
+            })}
+
+            </Select>
+          </Form.Item>
           {updatedData.map((d, i) => {
             return (
               <div key={i}>
@@ -47,6 +55,10 @@ const UpdateTest = () => {
               </div>
             );
           })}
+          <label htmlFor="image">Resim yukle:</label>
+            <Form.Item name='pictureURL'>
+              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
+            </Form.Item>
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
@@ -68,8 +80,8 @@ const UpdateTest = () => {
           </Form.Item>
         </Form>
       </Drawer>
-        </div>
-    )
-}
+    </div>
+  );
+};
 
-export default observer(UpdateTest)
+export default observer(UpdateKonular);

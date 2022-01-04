@@ -5,12 +5,13 @@ import GeneralStore from "../../../store/GeneralStore";
 import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateCevap from "./UpdateCevap";
+import PostCevap from "./PostCevap";
 
 const Cevaplar = () => {
   useEffect(() => {
     GeneralStore.getCevaplar();
+    GeneralStore.getSorular();
   }, []);
-  console.log(toJS(GeneralStore.type));
   return (
     <div>
       <h1>Cevaplar</h1>
@@ -18,7 +19,7 @@ const Cevaplar = () => {
         <Button
           onClick={() =>
             runInAction(() => {
-              GeneralStore.cevap_update = true;
+              GeneralStore.cevap_create = true;
             })
           }
         >
@@ -28,12 +29,13 @@ const Cevaplar = () => {
       {GeneralStore.cevaplar && GeneralStore.cevaplar.length > 0 && (
         <Table
           dataSource={GeneralStore.cevaplar}
-          rowKey={(d) => d}
+          rowKey={(d) => d.answerID}
           columns={[
             { title: "ID", dataIndex: "answerID" },
 
             { title: "Cevap", dataIndex: "answerSection" },
             { title: "SoruID", dataIndex: "questionID" },
+            { title: "Soru Başlığı", dataIndex: "questionDescription" },
             {
                 title: "Durum",
                 render: (d) => <div>{d.correctNess.toString()}</div>,
@@ -85,35 +87,36 @@ const Cevaplar = () => {
               ),
             },
           ]}
-        //   expandable={{
-        //     expandedRowRender: (record) => {
-        //       return (
-        //         <div className="super_content" key={record.id}>
-        //           <Row>
-        //             <Col xs={12}>
-        //               <Image src={record.pictureURL} />
-        //             </Col>
-        //             <Col xs={12}>
-        //               {record.subjects.map((d ) => {
-        //                 return (
-        //                   <div key={d.subjectID}>
-        //                     {" "}
-        //                     <Button style={{ width: "100%" }}>
-        //                       {d.subjectID}: {d.name}
-        //                     </Button>{" "}
-        //                   </div>
-        //                 );
-        //               })}
-        //             </Col>
-        //           </Row>
-        //         </div>
-        //       );
-        //     },
-        //     rowExpandable: (record) => record.id !== "Expandable",
-        //   }}
+          expandable={{
+            expandedRowRender: (record) => {
+              return (
+                <div className="super_content" key={record.id}>
+                  <Row>
+                    <Col xs={12}>
+                      <Image src={record.pictureURL} />
+                    </Col>
+                    {/* <Col xs={12}>
+                      {record.subjects.map((d ) => {
+                        return (
+                          <div key={d.subjectID}>
+                            {" "}
+                            <Button style={{ width: "100%" }}>
+                              {d.subjectID}: {d.name}
+                            </Button>{" "}
+                          </div>
+                        );
+                      })}
+                    </Col> */}
+                  </Row>
+                </div>
+              );
+            },
+            rowExpandable: (record) => record.id !== "Expandable",
+          }}
         />
       )}
       <UpdateCevap/>
+      <PostCevap/>
     </div>
   );
 };

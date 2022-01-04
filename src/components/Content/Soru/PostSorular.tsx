@@ -5,10 +5,11 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
-const UpdateQuestion = () => {
+
+
+const PostSorular = () => {
   const [form] = useForm();
   const updatedData = [
-    { key: "testID", label: "TestID" },
     { key: "description", label: "Soru Başlığı" }
 
 ];
@@ -20,7 +21,7 @@ const UpdateQuestion = () => {
       isClosed: GeneralStore.soru.isClosed,
       status: GeneralStore.soru.status,
     });
-  }, [GeneralStore.question_update]);
+  }, [GeneralStore.create_soru]);
   return (
     <div>
       <Drawer
@@ -29,12 +30,21 @@ const UpdateQuestion = () => {
         placement="right"
         onClose={() =>
           runInAction(
-            () => (GeneralStore.question_update = !GeneralStore.question_update)
+            () => (GeneralStore.create_soru = !GeneralStore.create_soru)
           )
         }
-        visible={GeneralStore.question_update}
+        visible={GeneralStore.create_soru}
       >
-        <Form onFinish={GeneralStore.updateSorular} form={form}>
+        <Form onFinish={GeneralStore.postSorular} form={form}>
+        <label htmlFor="testID">Test</label>
+        <Form.Item name='testID'>
+            <Select>
+              {GeneralStore.testler.map(d=>{
+              return <Option value={d.questionID} key={d.testID}>{d.testID} - {d.name}</Option>
+            })}
+
+            </Select>
+          </Form.Item>
           {updatedData.map((d, i) => {
             return (
               <div key={i}>
@@ -52,23 +62,10 @@ const UpdateQuestion = () => {
               <Option value="false">false</Option>
             </Select>
           </Form.Item>
-          <label htmlFor="status">Status</label>
-          <Form.Item name="status">
-            <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
-            </Select>
-          </Form.Item>
-          <label htmlFor="deleted">Silindi</label>
-          <Form.Item name="deleted">
-            <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
-            </Select>
-          </Form.Item>
+        
           <Form.Item>
             <Button htmlType="submit" type="primary">
-              Guncelle
+              Gonder
             </Button>
           </Form.Item>
         </Form>
@@ -77,4 +74,4 @@ const UpdateQuestion = () => {
   );
 };
 
-export default observer(UpdateQuestion);
+export default observer(PostSorular);

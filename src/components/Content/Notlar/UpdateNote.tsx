@@ -5,42 +5,39 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
-const UpdateKonular = () => {
+const UpdateNote = () => {
   const [form] = useForm();
   const updatedData = [
-    { key: "name", label: "İsim" },
+    { key: "noteDescription", label: "Not" }
   ];
 
   useEffect(() => {
-
-      form.setFieldsValue({
-        deleted: GeneralStore.konu.deleted,
-        lessonID: GeneralStore.konu.lessonID,
-        name: GeneralStore.konu.name,
-        status: GeneralStore.konu.status,
-      });
-
-    
-  }, [GeneralStore.konu_update]);
+    form.setFieldsValue({
+      deleted: GeneralStore.not.deleted,
+      subjectID: GeneralStore.not.subjectID,
+      noteDescription: GeneralStore.not.noteDescription,
+      status: GeneralStore.not.status,
+    });
+  }, [GeneralStore.note_update]);
   return (
     <div>
       <Drawer
         width={window.innerWidth / 3}
-        title={"Gencelleme"}
+        title={"Güncelleme"}
         placement="right"
         onClose={() =>
           runInAction(
-            () => (GeneralStore.konu_update = !GeneralStore.konu_update)
+            () => (GeneralStore.note_update = !GeneralStore.note_update)
           )
         }
-        visible={GeneralStore.konu_update}
+        visible={GeneralStore.note_update}
       >
-        <Form onFinish={GeneralStore.updateKonu} form={form}>
-        <label htmlFor="lessonID">Ders</label>
-        <Form.Item name='lessonID'>
+        <Form onFinish={GeneralStore.updateNot} form={form}>
+        <label htmlFor="subjectID">Konu</label>
+        <Form.Item name='subjectID'>
             <Select>
-            {GeneralStore.dersler.map(d=>{
-              return <Option value={d.subjectID} key={d.lessonID}>{d.lessonID} - {d.name}</Option>
+              {GeneralStore.konular.map(d=>{
+              return <Option value={d.noteID} key={d.subjectID}>{d.subjectID} - {d.name}</Option>
             })}
 
             </Select>
@@ -55,10 +52,6 @@ const UpdateKonular = () => {
               </div>
             );
           })}
-          <label htmlFor="image">Resim yukle:</label>
-            <Form.Item name='pictureURL'>
-              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
-            </Form.Item>
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
@@ -84,4 +77,4 @@ const UpdateKonular = () => {
   );
 };
 
-export default observer(UpdateKonular);
+export default observer(UpdateNote);

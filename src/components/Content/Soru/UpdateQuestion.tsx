@@ -5,21 +5,24 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
-const UpdateNote = () => {
+
+
+const UpdateQuestion = () => {
   const [form] = useForm();
   const updatedData = [
-    { key: "subjectID", label: "KonuID" },
-    { key: "noteDescription", label: "Not" }
-  ];
+    { key: "description", label: "Soru Başlığı" }
+
+];
 
   useEffect(() => {
     form.setFieldsValue({
-      deleted: GeneralStore.not.deleted,
-      subjectID: GeneralStore.not.subjectID,
-      noteDescription: GeneralStore.not.noteDescription,
-      status: GeneralStore.not.status,
+      deleted: GeneralStore.soru.deleted,
+      testID: GeneralStore.soru.testID,
+      isClosed: GeneralStore.soru.isClosed,
+      status: GeneralStore.soru.status,
+      description: GeneralStore.soru.description,
     });
-  }, [GeneralStore.note_update]);
+  }, [GeneralStore.question_update]);
   return (
     <div>
       <Drawer
@@ -28,12 +31,21 @@ const UpdateNote = () => {
         placement="right"
         onClose={() =>
           runInAction(
-            () => (GeneralStore.note_update = !GeneralStore.note_update)
+            () => (GeneralStore.question_update = !GeneralStore.question_update)
           )
         }
-        visible={GeneralStore.note_update}
+        visible={GeneralStore.question_update}
       >
-        <Form onFinish={GeneralStore.updateNot} form={form}>
+        <Form onFinish={GeneralStore.updateSorular} form={form}>
+        <label htmlFor="testID">Test</label>
+        <Form.Item name='testID'>
+            <Select>
+              {GeneralStore.testler.map(d=>{
+              return <Option value={d.questionID} key={d.testID}>{d.testID} - {d.name}</Option>
+            })}
+
+            </Select>
+          </Form.Item>
           {updatedData.map((d, i) => {
             return (
               <div key={i}>
@@ -44,6 +56,13 @@ const UpdateNote = () => {
               </div>
             );
           })}
+          <label htmlFor="isClosed">Kapalı</label>
+          <Form.Item name="isClosed">
+            <Select>
+              <Option value="true">true</Option>
+              <Option value="false">false</Option>
+            </Select>
+          </Form.Item>
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
@@ -69,4 +88,4 @@ const UpdateNote = () => {
   );
 };
 
-export default observer(UpdateNote);
+export default observer(UpdateQuestion);

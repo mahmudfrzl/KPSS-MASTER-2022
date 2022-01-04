@@ -6,19 +6,18 @@ import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
 
-const CreateDers = () => {
+const CreateTest = () => {
   const [form] = useForm();
-  const updatedData = [
-    { key: "description", label: "Hakkinda" },
-    { key: "name", label: "İsim" },
-  ];
+  const updatedData = [{ key: "name", label: "İsim" }];
 
   useEffect(() => {
     form.setFieldsValue({
-      lessonID: "",
-      name: "",
+      deleted: GeneralStore.test.deleted,
+      subjectID: GeneralStore.test.subjectID,
+      name: GeneralStore.test.name,
+      testID: GeneralStore.test.testID,
     });
-  }, [GeneralStore.ders_create]);
+  }, [GeneralStore.test_create]);
   return (
     <div>
       <Drawer
@@ -27,12 +26,24 @@ const CreateDers = () => {
         placement="right"
         onClose={() =>
           runInAction(
-            () => (GeneralStore.ders_create = !GeneralStore.ders_create)
+            () => (GeneralStore.test_create = !GeneralStore.test_create)
           )
         }
-        visible={GeneralStore.ders_create}
+        visible={GeneralStore.test_create}
       >
-        <Form onFinish={GeneralStore.postDers} form={form}>
+        <Form onFinish={GeneralStore.postTest} form={form}>
+          <label htmlFor="subjectID">Konu</label>
+          <Form.Item name="subjectID">
+            <Select>
+              {GeneralStore.konular.map((d) => {
+                return (
+                  <Option value={d.testID} key={d.subjectID}>
+                    {d.subjectID} - {d.name}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
           {updatedData.map((d, i) => {
             return (
               <div key={i}>
@@ -43,6 +54,13 @@ const CreateDers = () => {
               </div>
             );
           })}
+          <label htmlFor="forIsClosedQuestions">Kapalımı?</label>
+          <Form.Item name="forIsClosedQuestions">
+            <Select>
+              <Option value="true">true</Option>
+              <Option value="false">false</Option>
+            </Select>
+          </Form.Item>
           <label htmlFor="image">Resim yukle:</label>
           <Form.Item name="pictureURL">
             <Input
@@ -64,4 +82,4 @@ const CreateDers = () => {
   );
 };
 
-export default observer(CreateDers);
+export default observer(CreateTest);

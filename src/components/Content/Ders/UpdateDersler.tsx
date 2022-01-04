@@ -5,31 +5,38 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
-
-const UpdateDersler = () => {
+const UpdateKonular = () => {
   const [form] = useForm();
   const updatedData = [
-    { key: "description", label: "Hakkında" },
-    { key: "name", label: "İsim" }
+    { key: "lessonID", label: "DersID" },
+    { key: "name", label: "İsim" },
+    { key: "description", label: "Hakkinda" },
+    
   ];
 
   useEffect(() => {
 
       form.setFieldsValue({
         deleted: GeneralStore.ders.deleted,
-        description: GeneralStore.ders.description,
+        lessonID: GeneralStore.ders.lessonID,
         name: GeneralStore.ders.name,
         status: GeneralStore.ders.status,
+        description:GeneralStore.ders.description
       });
 
+    
   }, [GeneralStore.ders_update]);
   return (
     <div>
       <Drawer
         width={window.innerWidth / 3}
-        title={"Güncelleme"}
+        title={"Gencelleme"}
         placement="right"
-        onClose={() => ( runInAction(()=>GeneralStore.ders_update = !GeneralStore.ders_update) )}
+        onClose={() =>
+          runInAction(
+            () => (GeneralStore.ders_update = !GeneralStore.ders_update)
+          )
+        }
         visible={GeneralStore.ders_update}
       >
         <Form onFinish={GeneralStore.updateDers} form={form}>
@@ -43,6 +50,10 @@ const UpdateDersler = () => {
               </div>
             );
           })}
+          <label htmlFor="image">Resim yukle:</label>
+            <Form.Item name='pictureURL'>
+              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
+            </Form.Item>
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
@@ -68,4 +79,4 @@ const UpdateDersler = () => {
   );
 };
 
-export default observer(UpdateDersler);
+export default observer(UpdateKonular);

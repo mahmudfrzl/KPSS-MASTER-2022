@@ -5,12 +5,12 @@ import GeneralStore from "../../../store/GeneralStore";
 import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateTest from "./UpdateTest";
+import CreateTest from "./CreateTest";
 const Testler = () => {
   useEffect(() => {
-    GeneralStore.getTestler();
-    
+    GeneralStore.getTestler();    
   }, []);
-  console.log(toJS(GeneralStore.testler));
+
   return (
     <div>
       <h1>Testler</h1>
@@ -18,8 +18,7 @@ const Testler = () => {
         <Button
           onClick={() =>
             runInAction(() => {
-              GeneralStore.type = false;
-              GeneralStore.test_update = true;
+              GeneralStore.test_create = true;
             })
           }
         >
@@ -30,7 +29,7 @@ const Testler = () => {
         
         <Table 
           dataSource={GeneralStore.testler}
-          rowKey={(d) => d}
+          rowKey={(d) => d.testID}
           columns={[
             { title: "ID", dataIndex: "testID" },
 
@@ -73,6 +72,7 @@ const Testler = () => {
                     onConfirm={async()=>{
                         await axios.delete(`http://localhost:8080/api/test/delete?testID=${d.testID}`)
                         GeneralStore.getTestler()
+                        GeneralStore.getSorular()
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -91,7 +91,7 @@ const Testler = () => {
                     <Col xs={12}>
                       <Image src={record.pictureURL} />
                     </Col>
-                    <Col xs={12}>
+                    {/* <Col xs={12}>
                       {record.questions.map((d: any) => {
                         return (
                           <div key={d.questionID}>
@@ -102,7 +102,7 @@ const Testler = () => {
                           </div>
                         );
                       })}
-                    </Col>
+                    </Col> */}  
                   </Row>
                 </div>
               );
@@ -111,6 +111,7 @@ const Testler = () => {
           }}
         />
       )}
+      <CreateTest />
       <UpdateTest/>
     </div>
   );

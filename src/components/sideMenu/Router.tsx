@@ -11,12 +11,13 @@ import SideMenu from "./SideMenu";
 const Router = () => {
   return (
     <Switch>
+      <Route exact path="/sorular" component={Sorular} />
       <Route exact path="/dersler" component={Dersler} />
       <Route exact path="/konular" component={Subjects} />
       <Route exact path="/testler" component={Testler} />
       <Route exact path="/notlar" component={Note} />
-      <Route exact path="/sorular" component={Sorular} />
       <Route exact path="/cevaplar" component={Cevaplar} />
+
       <Route>
         <Empty description="Sayfa bulunamadı" />
       </Route>

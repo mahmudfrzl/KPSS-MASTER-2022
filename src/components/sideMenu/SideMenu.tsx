@@ -1,43 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { Layout, Menu, Breadcrumb, Button, Tooltip, Popconfirm } from "antd";
+import { useState } from "react";
+import { Layout, Menu, Breadcrumb, Button, Popconfirm } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Router from "./Router";
 import MenuContents from "./MenuContent";
-import { useHistory, useLocation } from "react-router-dom";
-import { runInAction, toJS } from "mobx";
-import "../../styles/Menu.scss"
-import { observer } from "mobx-react-lite";
-// import UserLogin from "../UserLogin";
-import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 
+import "../../styles/Menu.scss";
+import { observer } from "mobx-react-lite";
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { runInAction } from "mobx";
 const { SubMenu } = Menu;
 const { Content, Sider } = Layout;
 
 const SideMenu = () => {
-    const history=useHistory()
+  const history = useHistory();
+  const [state, setState] = useState<boolean>(false);
+  const [key, setKey] = useState<any>();
+
   return (
-    <Layout id="layout">
-    
+    <>
+        <Layout id="layout">
           <Sider
-            // collapsed={state}
+            collapsed={state}
             width={250}
             className="site-layout-background"
           >
             <div>
               <div
-            //    style={{ fontWeight: "bold", textAlign: "center", display: state ? "none" : "block", }}
-               >
-               
-              </div>
-              <div 
-            //   style={{ display:  state ? "none" : "flex", justifyContent: "center"}}
-              >
-             
-              </div>
+                style={{
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  display: state ? "none" : "block",
+                }}
+              ></div>
+              <div
+                style={{
+                  display: state ? "none" : "flex",
+                  justifyContent: "center",
+                }}
+              ></div>
             </div>
-            <div className="fix" 
-            // style={{ width: state ? 80 : 250 }}
-            >
+            <div className="fix" style={{ width: state ? 80 : 250 }}>
               <div
                 style={{
                   backgroundColor: "#ffffff",
@@ -46,16 +53,17 @@ const SideMenu = () => {
                 className="close"
               >
                 <Button
-                //   onClick={() => setState(!state)}
+                  onClick={() => setState(!state)}
                   style={{ width: "100%" }}
                 >
-                  {/* {state ? (
+                  {state ? (
                     <RightOutlined style={{ fontSize: 20 }} />
                   ) : (
                     <LeftOutlined style={{ fontSize: 20 }} />
-                  )} */}
+                  )}
                 </Button>
               </div>
+             
               <div
                 style={{
                   backgroundColor: "#ffffff",
@@ -64,12 +72,12 @@ const SideMenu = () => {
                 }}
               >
                 <img
-                //   onClick={() => history.push("/")}
+                  onClick={() => history.push("/")}
                   style={{
                     objectFit: "cover",
                     width: 180,
                     height: 50,
-                    // display: state ? "none" : "block",
+                    display: state ? "none" : "block",
                     marginBottom: 20,
                     cursor: "pointer",
                   }}
@@ -79,59 +87,32 @@ const SideMenu = () => {
               </div>
 
               <Menu
-                className="menu"
-                // openKeys={!state ? [key] : []}
-                // selectedKeys={[type]}
+                style={{ width: 256 }}
+                defaultSelectedKeys={["1"]}
+                defaultOpenKeys={["sub1"]}
                 mode="inline"
-                // onSelect={(e) =>
-                //   runInAction(() => (AboutStore.menuKey = e.key))
-                // }
-
-                style={{ borderRight: 0, height: "100%" }}
               >
-                {MenuContents.menus.map((name, i) => {
+                 <Menu.Item style={{marginLeft:25}} >
+              </Menu.Item>
+                {MenuContents.menus.map((d) => {
                   return (
                     <SubMenu
-                      onTitleClick={(e) => {
-                        // setKey(e.key);
-                        
-                        history.push(name.name)
-                        window.sessionStorage.setItem("menuKey", e.key);
-                      }}
-                      style={{ fontSize: 14 }}
-                      key={i}
-                      icon={
-                        <i style={{ fontSize: 14 }} className={name.icon}></i>
+                      onTitleClick={() =>
+                        history.push(`/${d.name.toLowerCase()}`)
                       }
-                      title={name.name}
+                      key={d.name}
+                      icon={<MailOutlined />}
+                      title={d.name}
                     >
-                      {name.subMenus.map((d,i) => {
+                      {d.subMenus.map((s, i) => {
                         return (
                           <Menu.Item
-                            onClick={() => {
-                              if (d.name === "Online Chat") {
-                                runInAction(() => {
-                                //   GeneralStore.chat = true;
-                                });
-                              }
-                            //   setMenuName(d.name);
-                            //   window.localStorage.setItem("menuName", d.name);
-                              history.push(`/${d.name}`);
-                            }}
-                            key={i}
-                            style={{
-                              fontSize: 14,
-                            //   color: d.name === menuName ? "#6290FF" : "black",
-                            }}
+                            key={i + 1}
+                            onClick={() =>
+                              history.push(`/${s.name.toLowerCase()}`)
+                            }
                           >
-                            <Tooltip title={d.name}>
-                              <i
-                                style={{ marginRight: 15, fontSize: 16 }}
-                                className={d.icon}
-                              ></i>
-
-                              {d.name}
-                            </Tooltip>
+                            {s.name}
                           </Menu.Item>
                         );
                       })}
@@ -168,9 +149,8 @@ const SideMenu = () => {
               <Router />
             </Content>
           </Layout>
-     
-     
-    </Layout>
+        </Layout>
+    </>
   );
 };
 

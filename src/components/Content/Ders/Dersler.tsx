@@ -5,12 +5,12 @@ import GeneralStore from "../../../store/GeneralStore";
 import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateDersler from "./UpdateDersler";
+import CreateDers from "./CreateDers";
 
 const Dersler = () => {
   useEffect(() => {
     GeneralStore.getDersler();
   }, []);
-  console.log(toJS(GeneralStore.type));
   return (
     <div>
       <h1>Dersler</h1>
@@ -18,7 +18,7 @@ const Dersler = () => {
         <Button
           onClick={() =>
             runInAction(() => {
-              GeneralStore.ders_update = true;
+              GeneralStore.ders_create = true;
             })
           }
         >
@@ -28,7 +28,7 @@ const Dersler = () => {
       {GeneralStore.dersler && GeneralStore.dersler.length > 0 && (
         <Table
           dataSource={GeneralStore.dersler}
-          rowKey={(d) => d}
+          rowKey={(d) => d.lessonID}
           columns={[
             { title: "ID", dataIndex: "lessonID" },
 
@@ -71,6 +71,9 @@ const Dersler = () => {
                         `http://localhost:8080/api/lessons/delete?lessonID=${d.lessonID}`
                       );
                       GeneralStore.getDersler();
+                      GeneralStore.getKonu();
+                      GeneralStore.getTestler()
+                      
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -89,7 +92,7 @@ const Dersler = () => {
                     <Col xs={12}>
                       <Image src={record.pictureURL} />
                     </Col>
-                    <Col xs={12}>
+                    {/* <Col xs={12}>
                       {record.subjects.map((d: any) => {
                         return (
                           <div key={d.subjectID}>
@@ -100,7 +103,7 @@ const Dersler = () => {
                           </div>
                         );
                       })}
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               );
@@ -110,6 +113,7 @@ const Dersler = () => {
         />
       )}
       <UpdateDersler />
+      <CreateDers/>
     </div>
   );
 };

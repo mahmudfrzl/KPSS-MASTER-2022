@@ -6,36 +6,43 @@ import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
 
-const UpdateCevap = () => {
+const PostCevaplar = () => {
   const [form] = useForm();
   const updatedData = [
     { key: "answerSection", label: "Cevap" },
-    { key: "questionID", label: "SoruID" },
   ];
 
   useEffect(() => {
     form.setFieldsValue({
-      deleted: GeneralStore.cevap.deleted,
       correctNess: GeneralStore.cevap.correctNess,
       answerSection: GeneralStore.cevap.answerSection,
       questionID: GeneralStore.cevap.questionID,
-      status: GeneralStore.cevap.status,
+    
     });
-  }, [GeneralStore.cevap_update]);
+  }, [GeneralStore.cevap_create]);
   return (
     <div>
       <Drawer
         width={window.innerWidth / 3}
-        title={"Güncelleme"}
+        title={"Ekle"}
         placement="right"
         onClose={() =>
           runInAction(
-            () => (GeneralStore.cevap_update = !GeneralStore.cevap_update)
+            () => (GeneralStore.cevap_create = !GeneralStore.cevap_create)
           )
         }
-        visible={GeneralStore.cevap_update}
+        visible={GeneralStore.cevap_create}
       >
-        <Form onFinish={GeneralStore.updateCevaplar} form={form}>
+        <Form onFinish={GeneralStore.postCevap} form={form}>
+        <label htmlFor="questionID">Soru</label>
+        <Form.Item name='questionID'>
+            <Select>
+            {GeneralStore.sorular.map(d=>{
+              return <Option value={d.answerID} key={d.questionID}>{d.questionID} - {d.description}</Option>
+            })}
+
+            </Select>
+          </Form.Item>
           {updatedData.map((d, i) => {
             return (
               <div key={i}>
@@ -53,23 +60,10 @@ const UpdateCevap = () => {
               <Option value="false">false</Option>
             </Select>
           </Form.Item>
-          <label htmlFor="status">Status</label>
-          <Form.Item name="status">
-            <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
-            </Select>
-          </Form.Item>
-          <label htmlFor="deleted">Silindi</label>
-          <Form.Item name="deleted">
-            <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
-            </Select>
-          </Form.Item>
+         
           <Form.Item>
             <Button htmlType="submit" type="primary">
-              Guncelle
+              Ekle
             </Button>
           </Form.Item>
         </Form>
@@ -78,4 +72,4 @@ const UpdateCevap = () => {
   );
 };
 
-export default observer(UpdateCevap);
+export default observer(PostCevaplar);

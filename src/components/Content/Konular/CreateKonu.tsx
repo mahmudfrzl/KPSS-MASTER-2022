@@ -14,30 +14,30 @@ const UpdateKonular = () => {
   useEffect(() => {
 
       form.setFieldsValue({
-        deleted: GeneralStore.konu.deleted,
-        lessonID: GeneralStore.konu.lessonID,
-        name: GeneralStore.konu.name,
-        status: GeneralStore.konu.status,
+        deleted: "",
+        lessonID: "",
+        name: "",
+        status: "",
       });
 
     
-  }, [GeneralStore.konu_update]);
+  }, [GeneralStore.konu_create]);
   return (
     <div>
       <Drawer
         width={window.innerWidth / 3}
-        title={"Gencelleme"}
+        title={"Olusturma"}
         placement="right"
         onClose={() =>
           runInAction(
-            () => (GeneralStore.konu_update = !GeneralStore.konu_update)
+            () => (GeneralStore.konu_create = !GeneralStore.konu_create)
           )
         }
-        visible={GeneralStore.konu_update}
+        visible={GeneralStore.konu_create}
       >
-        <Form onFinish={GeneralStore.updateKonu} form={form}>
+        <Form onFinish={GeneralStore.postKonu} form={form}>
         <label htmlFor="lessonID">Ders</label>
-        <Form.Item name='lessonID'>
+          <Form.Item name='lessonID'>
             <Select>
             {GeneralStore.dersler.map(d=>{
               return <Option value={d.subjectID} key={d.lessonID}>{d.lessonID} - {d.name}</Option>
@@ -59,23 +59,10 @@ const UpdateKonular = () => {
             <Form.Item name='pictureURL'>
               <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
             </Form.Item>
-          <label htmlFor="status">Status</label>
-          <Form.Item name="status">
-            <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
-            </Select>
-          </Form.Item>
-          <label htmlFor="deleted">Silindi</label>
-          <Form.Item name="deleted">
-            <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
-            </Select>
-          </Form.Item>
+        
           <Form.Item>
             <Button htmlType="submit" type="primary">
-              Guncelle
+              Gonder
             </Button>
           </Form.Item>
         </Form>

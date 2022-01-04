@@ -5,12 +5,17 @@ import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import GeneralStore from "../../../store/GeneralStore";
+import PostSorular from "./PostSorular";
 import UpdateQuestion from "./UpdateQuestion";
+
+
 const Sorular = () => {
+
   useEffect(() => {
     GeneralStore.getSorular();
   }, []);
-  console.log(GeneralStore.sorular);
+
+
   return (
     <div>
       <h1>Sorular</h1>
@@ -19,7 +24,7 @@ const Sorular = () => {
           onClick={() =>
             runInAction(() => {
 
-              GeneralStore.question_update = true;
+              GeneralStore.create_soru = true;
             })
           }
         >
@@ -29,7 +34,7 @@ const Sorular = () => {
       {GeneralStore.sorular && GeneralStore.sorular.length > 0 && (
         <Table
           dataSource={GeneralStore.sorular}
-          rowKey={(d) => d}
+          rowKey={(d) => d.questionID}
           columns={[
             { title: "ID", dataIndex: "questionID" },
             { title: "TestID", dataIndex: "testID" },
@@ -74,7 +79,8 @@ const Sorular = () => {
                       await axios.delete(
                         `http://localhost:8080/api/questions/delete?questionID=${d.questionID}`
                       );
-                      GeneralStore.getKonu();
+                      GeneralStore.getSorular();
+                      GeneralStore.getCevaplar();
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -90,14 +96,15 @@ const Sorular = () => {
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
-                    <Col xs={12}>
-                    {record.pictures.map(d=>{
-                        return <Image key={d.pictureID} src={d.url} />
+                  <Col xs={24}>
+                    {record?.pictures&&record?.pictures.map((d:any)=>{
+                        return <Image key={d?.pictureID} src={d?.url} />
                     })}    
+
                     </Col>
-                    <Col xs={12}>
+                    {/* <Col xs={12}>
                       <h2>Cevaplar</h2>
-                      {record.answers.map((d, i) => {
+                      {record.answers.map((d:any, i:number) => {
                         return (
                           <div key={i}>
                             <Button style={{ width: "100%" }}>
@@ -107,7 +114,7 @@ const Sorular = () => {
                         );
                       })}
                       <hr />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               );
@@ -117,6 +124,7 @@ const Sorular = () => {
         />
       )}
       <UpdateQuestion/>
+      <PostSorular/>
     </div>
   );
 };
