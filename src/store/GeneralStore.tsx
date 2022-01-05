@@ -3,7 +3,7 @@ import axios from "axios";
 import { message } from "antd";
 import { runInContext } from "vm";
 
-let url_dersler = "http://localhost:8080/api";
+let url_dersler = "http://37.148.211.32:8080/api";
 
 class GeneralStore {
   dersler: any[] = [];
