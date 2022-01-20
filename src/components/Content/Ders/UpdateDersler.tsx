@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 const { Option } = Select;
-const UpdateKonular = () => {
+const UpdateDersler = () => {
   const [form] = useForm();
   const updatedData = [
     { key: "lessonID", label: "DersID" },
@@ -27,7 +27,7 @@ const UpdateKonular = () => {
     
   }, [GeneralStore.ders_update]);
   return (
-    <div>
+    <div> 
       <Drawer
         width={window.innerWidth / 3}
         title={"Gencelleme"}
@@ -53,19 +53,21 @@ const UpdateKonular = () => {
           <label htmlFor="image">Resim yukle:</label>
             <Form.Item name='pictureURL'>
               <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
+             
+              
             </Form.Item>
-          <label htmlFor="status">Status</label>
+            <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
             </Select>
           </Form.Item>
           <label htmlFor="deleted">Silindi</label>
           <Form.Item name="deleted">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv </Option>
             </Select>
           </Form.Item>
           <Form.Item>
@@ -79,4 +81,4 @@ const UpdateKonular = () => {
   );
 };
 
-export default observer(UpdateKonular);
+export default observer(UpdateDersler);

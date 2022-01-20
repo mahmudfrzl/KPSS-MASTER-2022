@@ -8,6 +8,7 @@ import UpdateTest from "./UpdateTest";
 import CreateTest from "./CreateTest";
 const Testler = () => {
   useEffect(() => {
+    GeneralStore.getKonu()
     GeneralStore.getTestler();    
   }, []);
 
@@ -39,11 +40,15 @@ const Testler = () => {
 
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted.toString()}</div>,
+              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
+            },
+            {
+              title: "Kapalı mı?",
+              render: (d) => <div>{d.forIsClosedQuestions?"Kapalı":"Açık"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status.toString()}</div>,
+              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -70,7 +75,7 @@ const Testler = () => {
                   <Popconfirm
                     title="Silmek istediğinizden emin misiniz?"
                     onConfirm={async()=>{
-                        await axios.delete(`http://localhost:8080/api/test/delete?testID=${d.testID}`)
+                        await axios.delete(`http://37.148.211.32:8080/api/test/delete?testID=${d.testID}`)
                         GeneralStore.getTestler()
                         GeneralStore.getSorular()
                     }}
@@ -91,7 +96,7 @@ const Testler = () => {
                     <Col xs={12}>
                       <Image src={record.pictureURL} />
                     </Col>
-                    {/* <Col xs={12}>
+                    {/* { <Col xs={12}>
                       {record.questions.map((d: any) => {
                         return (
                           <div key={d.questionID}>
@@ -102,7 +107,7 @@ const Testler = () => {
                           </div>
                         );
                       })}
-                    </Col> */}  
+                    </Col> }   */}
                   </Row>
                 </div>
               );

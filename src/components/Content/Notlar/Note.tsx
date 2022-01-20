@@ -2,12 +2,13 @@ import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import GeneralStore from "../../../store/GeneralStore";
-import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
+import { Table, Image, Button, Row, Col, Popconfirm, Select } from "antd";
 import axios from "axios";
 import UpdateNote from "./UpdateNote";
 import CreateNote from "./CreateNote";
 const Note = () => {
   useEffect(() => {
+    GeneralStore.getKonu()
     GeneralStore.getNotlar();
   }, []);
   return (
@@ -36,16 +37,17 @@ const Note = () => {
             { title: "KonuID", dataIndex: "subjectID" },
             {
               title: "Şekilli",
-              render: (d) => <div>{d.hasPicture.toString()}</div>,
+              render: (d) => <div>{d.hasPicture?"Şekilli":"Şekilsiz"}</div>,
             },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted.toString()}</div>,
+              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status.toString()}</div>,
+              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
             },
+     
             {
               title: "Güncelle",
               render: (d) => (
@@ -55,8 +57,10 @@ const Note = () => {
                       {
                           GeneralStore.not=d
                           GeneralStore.note_update=!GeneralStore.note_update
+                        
                         }
                       )
+               console.log(toJS(d))
                  
                  }} style={{ backgroundColor: "green", color: "#fff" }}>
                     Güncelle
@@ -71,7 +75,7 @@ const Note = () => {
                   <Popconfirm
                     title="Silmek istediğinizden emin misiniz?"
                     onConfirm={async()=>{
-                        await axios.delete(`http://localhost:8080/api/notes/delete?noteID=${d.noteID}`)
+                        await axios.delete(`http://37.148.211.32:8080/api/notes/delete?noteID=${d.noteID}`)
                         GeneralStore.getNotlar()
                     }}
                   >
@@ -88,7 +92,7 @@ const Note = () => {
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
-                    <Col xs={24}>
+                    <Col xs={12}>
                     {record?.pictures&&record?.pictures.map((d:any)=>{
                         return <Image key={d?.pictureID} src={d?.url} />
                     })}    

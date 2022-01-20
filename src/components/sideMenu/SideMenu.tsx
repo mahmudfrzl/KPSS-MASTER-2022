@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Layout, Menu, Breadcrumb, Button, Popconfirm } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { HomeOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Router from "./Router";
 import MenuContents from "./MenuContent";
 import { useHistory } from "react-router-dom";
@@ -74,34 +74,31 @@ const SideMenu = () => {
                 <img
                   onClick={() => history.push("/")}
                   style={{
-                    objectFit: "cover",
-                    width: 180,
-                    height: 50,
+                    objectFit: "fill",
+                    width: 150,
+                    height: 120,
                     display: state ? "none" : "block",
                     marginBottom: 20,
                     cursor: "pointer",
                   }}
-                  src="/titan_group.jpg"
+                  src="/logo.PNG"
                   alt=""
                 />
               </div>
 
               <Menu
-                style={{ width: 256 }}
+                style={{ width: "100%" }}
                 defaultSelectedKeys={["1"]}
                 defaultOpenKeys={["sub1"]}
                 mode="inline"
               >
-                 <Menu.Item style={{marginLeft:25}} >
-              </Menu.Item>
+    
                 {MenuContents.menus.map((d) => {
                   return (
-                    <SubMenu
-                      onTitleClick={() =>
-                        history.push(`/${d.name.toLowerCase()}`)
-                      }
+                    <SubMenu 
+                    
                       key={d.name}
-                      icon={<MailOutlined />}
+                      icon={<HomeOutlined />}
                       title={d.name}
                     >
                       {d.subMenus.map((s, i) => {
@@ -109,7 +106,7 @@ const SideMenu = () => {
                           <Menu.Item
                             key={i + 1}
                             onClick={() =>
-                              history.push(`/${s.name.toLowerCase()}`)
+                              history.push(`/${s.name==="Sosial linkler"?"sosial-linkler":s.name.toLowerCase()}`)
                             }
                           >
                             {s.name}

@@ -18,6 +18,7 @@ const UpdateKonular = () => {
         subjectID: GeneralStore.test.subjectID,
         name: GeneralStore.test.name,
         testID: GeneralStore.test.testID,
+        status:GeneralStore.test.status
       });
 
     
@@ -59,18 +60,25 @@ const UpdateKonular = () => {
             <Form.Item name='pictureURL'>
               <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
             </Form.Item>
-          <label htmlFor="status">Status</label>
+            <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
             </Select>
           </Form.Item>
           <label htmlFor="deleted">Silindi</label>
           <Form.Item name="deleted">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv </Option>
+            </Select>
+          </Form.Item>
+          <label htmlFor="forIsClosedQuestions">Kapalımı?</label>
+          <Form.Item name="forIsClosedQuestions">
+            <Select>
+              <Option value="true">Kapalı</Option>
+              <Option value="false">Açık</Option>
             </Select>
           </Form.Item>
           <Form.Item>

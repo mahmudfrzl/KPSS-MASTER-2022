@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Input, Select } from "antd";
+import { Button, Drawer, Form, Image, Input, Select } from "antd";
 import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
@@ -7,9 +7,7 @@ import { runInAction } from "mobx";
 const { Option } = Select;
 const UpdateNote = () => {
   const [form] = useForm();
-  const updatedData = [
-    { key: "noteDescription", label: "Not" }
-  ];
+  const updatedData = [{ key: "noteDescription", label: "Not" }];
 
   useEffect(() => {
     form.setFieldsValue({
@@ -33,13 +31,16 @@ const UpdateNote = () => {
         visible={GeneralStore.note_update}
       >
         <Form onFinish={GeneralStore.updateNot} form={form}>
-        <label htmlFor="subjectID">Konu</label>
-        <Form.Item name='subjectID'>
+          <label htmlFor="subjectID">Konu</label>
+          <Form.Item name="subjectID">
             <Select>
-              {GeneralStore.konular.map(d=>{
-              return <Option value={d.noteID} key={d.subjectID}>{d.subjectID} - {d.name}</Option>
-            })}
-
+              {GeneralStore.konular.map((d) => {
+                return (
+                  <Option value={d.noteID} key={d.subjectID}>
+                    {d.subjectID} - {d.name}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           {updatedData.map((d, i) => {
@@ -52,18 +53,50 @@ const UpdateNote = () => {
               </div>
             );
           })}
+      
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
             </Select>
           </Form.Item>
           <label htmlFor="deleted">Silindi</label>
           <Form.Item name="deleted">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv </Option>
+            </Select>
+          </Form.Item>
+          <label htmlFor="">Guncellenecek resim:</label>
+          <Form.Item name="pictureURL">
+            <Select>
+              {GeneralStore.not.pictures &&
+                GeneralStore.not.pictures.map((a: any) => {
+                  return (
+                    <Select.Option value={a.pictureID}>
+                      <div
+                        onClick={() =>
+                          runInAction(() => (GeneralStore.img_id = a.pictureID))
+                        }
+                      >
+                        <Image
+                          preview={false}
+                          src={a.url}
+                        /> <br />
+                        <label htmlFor="image">Resim yukle:</label>
+                        <Input
+                          onChange={(e: any) =>
+                            runInAction(
+                              () => (GeneralStore.image = e.target.files[0])
+                            )
+                          }
+                          type="file"
+                        />
+                      </div>
+                    </Select.Option>
+                  );
+                })}
             </Select>
           </Form.Item>
           <Form.Item>

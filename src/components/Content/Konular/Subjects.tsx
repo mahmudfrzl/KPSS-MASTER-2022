@@ -10,6 +10,7 @@ import UpdateKonular from "./UpdateKonular";
 
 const Subjects = () => {
   useEffect(() => {
+    GeneralStore.getDersler()
     GeneralStore.getKonu();
   }, []);
 
@@ -36,12 +37,16 @@ const Subjects = () => {
             { title: "Ismi", dataIndex: "name" },
             { title: "DersID", dataIndex: "lessonID" },
             {
+              title: "Premium mu?",
+              render: (d) => <div>{d.isPremium?"Aktiv":"Deaktiv"}</div>,
+            },
+            {
               title: "Silindi",
-              render: (d) => <div>{d.deleted.toString()}</div>,
+              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status.toString()}</div>,
+              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -69,7 +74,7 @@ const Subjects = () => {
                     title="Silmek istediğinizden emin misiniz?"
                     onConfirm={async () => {
                       await axios.delete(
-                        `http://localhost:8080/api/subjects/delete?subjectID=${d.subjectID}`
+                        `http://37.148.211.32:8080/api/subjects/delete?subjectID=${d.subjectID}`
                       );
                       GeneralStore.getKonu();
                       GeneralStore.getTestler()

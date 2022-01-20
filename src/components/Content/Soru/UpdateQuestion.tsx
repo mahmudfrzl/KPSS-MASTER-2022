@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Input, Select } from "antd";
+import { Button, Drawer,Image, Form, Input, Select } from "antd";
 import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
@@ -59,22 +59,53 @@ const UpdateQuestion = () => {
           <label htmlFor="isClosed">Kapalı</label>
           <Form.Item name="isClosed">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Kapalı</Option>
+              <Option value="false">Açık</Option>
             </Select>
           </Form.Item>
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
             </Select>
           </Form.Item>
           <label htmlFor="deleted">Silindi</label>
           <Form.Item name="deleted">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv </Option>
+            </Select>
+          </Form.Item>
+          <label htmlFor="">Guncellenecek resim:</label>
+          <Form.Item name="pictureURL">
+            <Select>
+              {
+                GeneralStore.soru.pictures && 
+                GeneralStore.soru.pictures.map((a:any)=>{
+                  return (
+                    <Select.Option value={a.pictureID}>
+                        <div onClick={()=> runInAction(() =>(
+                          GeneralStore.img_question_id = a.pictureID
+                        ))}>
+                        <Image
+                          preview={false}
+                          src={a.url}
+                        /> <br />
+                        <label htmlFor="image_question">Resim yukle:</label>
+                        <Input
+                          onChange={(e: any) =>
+                            runInAction(
+                              () => (GeneralStore.image_question = e.target.files[0])
+                            )
+                          }
+                          type="file"
+                        />
+                      </div>
+                    </Select.Option>
+                  )
+                })
+              }
             </Select>
           </Form.Item>
           <Form.Item>

@@ -7,20 +7,16 @@ import { runInAction } from "mobx";
 const { Option } = Select;
 const UpdateKonular = () => {
   const [form] = useForm();
-  const updatedData = [
-    { key: "name", label: "İsim" },
-  ];
+  const updatedData = [{ key: "name", label: "İsim" }];
 
   useEffect(() => {
-
-      form.setFieldsValue({
-        deleted: "",
-        lessonID: "",
-        name: "",
-        status: "",
-      });
-
-    
+    form.setFieldsValue({
+      deleted: "",
+      lessonID: "",
+      name: "",
+      status: "",
+      isPremium:""
+    });
   }, [GeneralStore.konu_create]);
   return (
     <div>
@@ -36,13 +32,16 @@ const UpdateKonular = () => {
         visible={GeneralStore.konu_create}
       >
         <Form onFinish={GeneralStore.postKonu} form={form}>
-        <label htmlFor="lessonID">Ders</label>
-          <Form.Item name='lessonID'>
+          <label htmlFor="lessonID">Ders</label>
+          <Form.Item name="lessonID">
             <Select>
-            {GeneralStore.dersler.map(d=>{
-              return <Option value={d.subjectID} key={d.lessonID}>{d.lessonID} - {d.name}</Option>
-            })}
-
+              {GeneralStore.dersler.map((d) => {
+                return (
+                  <Option value={d.subjectID} key={d.lessonID}>
+                    {d.lessonID} - {d.name}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           {updatedData.map((d, i) => {
@@ -55,11 +54,23 @@ const UpdateKonular = () => {
               </div>
             );
           })}
+          <label htmlFor="isPremium">Premium mu?</label>
+          <Form.Item name="isPremium">
+            <Select>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
+            </Select>
+          </Form.Item>
           <label htmlFor="image">Resim yukle:</label>
-            <Form.Item name='pictureURL'>
-              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
-            </Form.Item>
-        
+          <Form.Item name="pictureURL">
+            <Input
+              onChange={(e: any) =>
+                runInAction(() => (GeneralStore.image = e.target.files[0]))
+              }
+              type="file"
+            />
+          </Form.Item>
+
           <Form.Item>
             <Button htmlType="submit" type="primary">
               Gonder

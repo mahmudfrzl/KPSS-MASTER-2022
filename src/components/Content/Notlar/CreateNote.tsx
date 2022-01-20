@@ -23,7 +23,7 @@ const CreateNote = () => {
     <div>
       <Drawer
         width={window.innerWidth / 3}
-        title={"Güncelleme"}
+        title={"Ekle"}
         placement="right"
         onClose={() =>
           runInAction(
@@ -58,8 +58,8 @@ const CreateNote = () => {
           <label htmlFor="hasPicture">Şekillimi?</label>
           <Form.Item name="hasPicture">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Şekilli</Option>
+              <Option value="false">Şekil</Option>
             </Select>
           </Form.Item>
           <label htmlFor="image">Resim yukle:</label>

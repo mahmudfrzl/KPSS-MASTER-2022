@@ -57,22 +57,22 @@ const UpdateCevap = () => {
           <label htmlFor="correctNess">Durum</label>
           <Form.Item name="correctNess">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Doğru</Option>
+              <Option value="false">Yanlış</Option>
             </Select>
           </Form.Item>
           <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
             </Select>
           </Form.Item>
           <label htmlFor="deleted">Silindi</label>
           <Form.Item name="deleted">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv </Option>
             </Select>
           </Form.Item>
           <Form.Item>

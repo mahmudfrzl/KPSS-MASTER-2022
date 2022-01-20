@@ -56,8 +56,8 @@ const PostCevaplar = () => {
           <label htmlFor="correctNess">Durum</label>
           <Form.Item name="correctNess">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Doğru</Option>
+              <Option value="false">Yanlış</Option>
             </Select>
           </Form.Item>
          

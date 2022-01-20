@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import axios from "axios";
-import { message } from "antd";
+import { Form, message } from "antd";
 import { runInContext } from "vm";
 
 let url_dersler = "http://37.148.211.32:8080/api";
@@ -37,6 +37,10 @@ class GeneralStore {
   cevap_create: boolean = false;
 
   image: any = {};
+  img_id:number=0
+
+  image_question: any = {};
+  img_question_id:number=0
   constructor() {
     makeAutoObservable(this);
   }
@@ -60,7 +64,7 @@ class GeneralStore {
     runInAction(() => (this.ders_create = false));
     message.success(data.data.message);
   };
-
+//http://localhost:8080/api/lessons/update?deleted=false&description=xcbvxcvb&lessonID=1&name=sdfzsdf&status=true
   updateDers = async (values: any) => {
     const fd = new FormData();
 
@@ -82,7 +86,7 @@ class GeneralStore {
     message.success(data.data.message);
   };
 
-  // konu
+
 
   getKonu = async () => {
     try {
@@ -108,9 +112,9 @@ class GeneralStore {
     console.log(this.image);
 
     fd.append("pictureURL", this.image);
-
+  //  http://37.148.211.32:8080/api/subjects/create?isPremium=false&lessonID=1&name=sdf
     const data: any = await axios.post(
-      `${url_dersler}/subjects/create?lessonID=${values.lessonID}&name=${values.name}`,
+      `${url_dersler}/subjects/create?isPremium=${values.isPremium}&lessonID=${values.lessonID}&name=${values.name}`,
       fd
     );
     this.getKonu();
@@ -125,9 +129,8 @@ class GeneralStore {
     console.log(this.image);
 
     fd.append("pictureURL", this.image);
-
     const data: any = await axios.put(
-      `${url_dersler}/subjects/update?deleted=${values.deleted.toString()}&lessonID=${
+      `${url_dersler}/subjects/update?deleted=${values.deleted.toString()}&isPremium=${values.isPremium.toString()}&lessonID=${
         values.lessonID
       }&name=${values.name}&status=${values.status.toString()}&subjectID=${
         this.konu.subjectID
@@ -169,13 +172,14 @@ class GeneralStore {
     });
     message.success(data.data.message);
   };
-
+ // http://localhost:8080/api/test/update?deleted=true&forIsClosedQuestions=true&name=sdgfsfd&status=true&subjectID=1&testID=1
   updateTest = async (values: any) => {
     const fd = new FormData();
     fd.append("picture-url", this.image);
 
     const data: any = await axios.put(
-      `${url_dersler}/test/update?deleted=false&name=${
+      `${url_dersler}/test/update?deleted=${values.deleted.toString()}&forIsClosedQuestions=${values.forIsClosedQuestions.toString()}
+      &name=${
         values.name
       }&status=${values.status.toString()}&subjectID=${
         values.subjectID
@@ -202,12 +206,12 @@ class GeneralStore {
       }
     }
   };
-
+//http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=8
   postNote = async (values: any) => {
     const fd=new FormData()
     fd.append("pictureURL", this.image);
     const data: any = await axios.post(`${url_dersler}/notes/create`, values);
-    const image=axios.post(`http://localhost:8080/api/pictures/upload-photo-note?noteID=${data.data.data}`)
+    await axios.post(`http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,fd)
     this.getNotlar();
     runInAction(() => {
       this.create_note = false;
@@ -220,9 +224,16 @@ class GeneralStore {
       `${url_dersler}/notes/update?noteID=${this.not.noteID}`,
       values
     );
+    const fd=new FormData()
+    fd.append('pictureURL',this.image)
+    this.img_id !==0 && await axios.put(
+      `http://37.148.211.32:8080/api/pictures/update-photo-note?noteID=${this.not.noteID}&pictureID=${this.img_id}`,
+      fd
+    );
     this.getNotlar();
     runInAction(() => {
       this.note_update = false;
+      this.img_id = 0
     });
     message.success(data.data.message);
   };
@@ -240,24 +251,35 @@ class GeneralStore {
       }
     }
   };
-
+//http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=1
   postSorular = async (values: any) => {
-    const data = await axios.post(`${url_dersler}/questions/create`, values);
+    const fd = new FormData()
+    fd.append("pictureURL",this.image_question);
+
+    const data:any = await axios.post(`${url_dersler}/questions/create`, values);
+    await axios.post(`${url_dersler}/pictures/upload-photo-question?questionID=${data.data.data.questionID}`,fd)
     this.getSorular();
     runInAction(() => {
       this.create_soru = false;
     });
     message.success(data.data.message);
   };
-
+//http://37.148.211.32:8080/api/pictures/update-photo-question?pictureID=1&questionID=1
   updateSorular = async (values: any) => {
-    const data = await axios.put(
+    const data:any = await axios.put(
       `${url_dersler}/questions/update?questionID=${this.soru.questionID}`,
       values
+    );
+    const fd=new FormData()
+    fd.append('pictureURL',this.image_question)
+    this.img_question_id !==0 && await axios.put( //?noteID=${this.not.noteID}&pictureID=${this.img_id}`,
+      `http://37.148.211.32:8080/api/pictures/update-photo-question?pictureID=${this.img_question_id}&questionID=${this.soru.questionID}`,
+      fd
     );
     this.getSorular();
     runInAction(() => {
       this.question_update = false;
+      this.img_question_id = 0
     });
     message.success(data.data.message);
   };
@@ -275,13 +297,30 @@ class GeneralStore {
       }
     }
   };
+  //http://localhost:8080/api/answers/create-with-close-question
+  //http://localhost:8080/api/answers/create-with-open-question
   postCevap = async (values: any) => {
-    const data = await axios.post(url_dersler + "/answers/create", values);
-    this.getCevaplar();
-    runInAction(() => {
-      this.cevap_create = false;
-    });
-    message.success(data.data.message);
+
+    if(values.questionID.isClosed){
+
+      const data = await axios.post(url_dersler + "/answers/create-with-close-question", values);
+      this.getCevaplar();
+      runInAction(() => {
+        this.cevap_create = false;
+      });
+      message.success(data.data.message);
+    }else{
+        const data = await axios.post(url_dersler + "/answers/create-with-open-question", values);
+        this.getCevaplar();
+        runInAction(() => {
+          this.cevap_create = false;
+        });
+        message.success(data.data.message);
+    }
+
+
+
+
   };
 
   updateCevaplar = async (values: any) => {

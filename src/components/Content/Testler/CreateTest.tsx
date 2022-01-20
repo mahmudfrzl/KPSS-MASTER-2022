@@ -57,8 +57,8 @@ const CreateTest = () => {
           <label htmlFor="forIsClosedQuestions">Kapalımı?</label>
           <Form.Item name="forIsClosedQuestions">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Kapalı</Option>
+              <Option value="false">Açık</Option>
             </Select>
           </Form.Item>
           <label htmlFor="image">Resim yukle:</label>

@@ -58,11 +58,14 @@ const PostSorular = () => {
           <label htmlFor="isClosed">Kapalı</label>
           <Form.Item name="isClosed">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Kapalı</Option>
+              <Option value="false">Açık</Option>
             </Select>
           </Form.Item>
-        
+          <label htmlFor="image_question">Resim yukle:</label>
+            <Form.Item name='pictureURL'>
+              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image_question=e.target.files[0])} type='file' />
+            </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">
               Gonder

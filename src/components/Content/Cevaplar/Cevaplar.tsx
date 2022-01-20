@@ -38,15 +38,15 @@ const Cevaplar = () => {
             { title: "Soru Başlığı", dataIndex: "questionDescription" },
             {
                 title: "Durum",
-                render: (d) => <div>{d.correctNess.toString()}</div>,
+                render: (d) => <div>{d.correctNess?"Doğru":`Yanlış`}</div>,
               },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted.toString()}</div>,
+              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status.toString()}</div>,
+              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Güncelle",

@@ -12,6 +12,7 @@ import UpdateQuestion from "./UpdateQuestion";
 const Sorular = () => {
 
   useEffect(() => {
+    GeneralStore.getTestler()
     GeneralStore.getSorular();
   }, []);
 
@@ -41,15 +42,15 @@ const Sorular = () => {
             { title: "Soru Başlığı", dataIndex: "description" },
             {
                 title: "Kapalı",
-                render: (d) => <div>{d.isClosed.toString()}</div>,
+                render: (d) => <div>{d.isClosed?"Kapalı":"Açık"}</div>,
               },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted.toString()}</div>,
+              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status.toString()}</div>,
+              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -77,7 +78,7 @@ const Sorular = () => {
                     title="Silmek istediğinizden emin misiniz?"
                     onConfirm={async () => {
                       await axios.delete(
-                        `http://localhost:8080/api/questions/delete?questionID=${d.questionID}`
+                        `http://37.148.211.32:8080/api/questions/delete?questionID=${d.questionID}`
                       );
                       GeneralStore.getSorular();
                       GeneralStore.getCevaplar();

@@ -36,11 +36,11 @@ const Dersler = () => {
             { title: "Hakkında", dataIndex: "description" },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted.toString()}</div>,
+              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status.toString()}</div>,
+              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -68,7 +68,7 @@ const Dersler = () => {
                     title="Silmek istediğinizden emin misiniz?"
                     onConfirm={async () => {
                       await axios.delete(
-                        `http://localhost:8080/api/lessons/delete?lessonID=${d.lessonID}`
+                        `http://37.148.211.32:8080/api/lessons/delete?lessonID=${d.lessonID}`
                       );
                       GeneralStore.getDersler();
                       GeneralStore.getKonu();

@@ -8,7 +8,7 @@ const { Option } = Select;
 const UpdateKonular = () => {
   const [form] = useForm();
   const updatedData = [
-    { key: "name", label: "İsim" },
+    { key: "name", label: "İsim" }
   ];
 
   useEffect(() => {
@@ -18,6 +18,7 @@ const UpdateKonular = () => {
         lessonID: GeneralStore.konu.lessonID,
         name: GeneralStore.konu.name,
         status: GeneralStore.konu.status,
+        isPremium:GeneralStore.konu.isPremium
       });
 
     
@@ -57,20 +58,27 @@ const UpdateKonular = () => {
           })}
           <label htmlFor="image">Resim yukle:</label>
             <Form.Item name='pictureURL'>
-              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
+              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.konu.pictureURL=e.target.files[0])} type='file' />
             </Form.Item>
-          <label htmlFor="status">Status</label>
+            <label htmlFor="isPremium">Premium mu?</label>
+          <Form.Item name="isPremium">
+            <Select>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
+            </Select>
+          </Form.Item>
+            <label htmlFor="status">Status</label>
           <Form.Item name="status">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv</Option>
             </Select>
           </Form.Item>
           <label htmlFor="deleted">Silindi</label>
           <Form.Item name="deleted">
             <Select>
-              <Option value="true">true</Option>
-              <Option value="false">false</Option>
+              <Option value="true">Aktiv</Option>
+              <Option value="false">Deaktiv </Option>
             </Select>
           </Form.Item>
           <Form.Item>

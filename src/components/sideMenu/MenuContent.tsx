@@ -1,15 +1,16 @@
 class MenuContents {
   menus = [
     {
-      name: "Dersler",
-      icon: "fas fa-home",
+      name: "İçerik",
+      icon: "",
       subMenus: [
+        { icon: "fas fa-home", name: "Dersler" },
         { icon: "fas fa-users", name: "Konular" },
         { name: "Testler", icon: "fas fa-history" },
         { name: "Notlar", icon: "fas fa-tools" },
         { name: "Sorular", icon: "fas fa-robot" },
         { name: "Cevaplar", icon: "fas fa-file-alt" },
-
+        { name: "Sosial linkler", icon: "fas fa-link" },
       ],
     },
     // {
