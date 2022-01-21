@@ -6,10 +6,11 @@ import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateTest from "./UpdateTest";
 import CreateTest from "./CreateTest";
+import { Link } from "react-router-dom";
 const Testler = () => {
   useEffect(() => {
-    GeneralStore.getKonu()
-    GeneralStore.getTestler();    
+    GeneralStore.getKonu();
+    GeneralStore.getTestler();
   }, []);
 
   return (
@@ -27,8 +28,7 @@ const Testler = () => {
         </Button>
       </div>
       {GeneralStore.testler && GeneralStore.testler.length > 0 && (
-        
-        <Table 
+        <Table
           dataSource={GeneralStore.testler}
           rowKey={(d) => d.testID}
           columns={[
@@ -40,29 +40,31 @@ const Testler = () => {
 
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.deleted ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Kapalı mı?",
-              render: (d) => <div>{d.forIsClosedQuestions?"Kapalı":"Açık"}</div>,
+              render: (d) => (
+                <div>{d.forIsClosedQuestions ? "Kapalı" : "Açık"}</div>
+              ),
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.status ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
               render: (d) => (
                 <div>
-                  <Button onClick={()=>{
-                      runInAction(()=>
-                      {
-                          GeneralStore.test=d
-                          GeneralStore.test_update=!GeneralStore.test_update
-                        }
-                      )
-                 
-                 }} style={{ backgroundColor: "green", color: "#fff" }}>
+                  <Button
+                    onClick={() => {
+                      runInAction(() => {
+                        GeneralStore.test = d;
+                        GeneralStore.test_update = !GeneralStore.test_update;
+                      });
+                    }}
+                    style={{ backgroundColor: "green", color: "#fff" }}
+                  >
                     Güncelle
                   </Button>
                 </div>
@@ -74,10 +76,12 @@ const Testler = () => {
                 <div>
                   <Popconfirm
                     title="Silmek istediğinizden emin misiniz?"
-                    onConfirm={async()=>{
-                        await axios.delete(`http://37.148.211.32:8080/api/test/delete?testID=${d.testID}`)
-                        GeneralStore.getTestler()
-                        GeneralStore.getSorular()
+                    onConfirm={async () => {
+                      await axios.delete(
+                        `http://37.148.211.32:8080/api/test/delete?testID=${d.testID}`
+                      );
+                      GeneralStore.getTestler();
+                      GeneralStore.getSorular();
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -94,20 +98,30 @@ const Testler = () => {
                 <div className="super_content" key={record.id}>
                   <Row>
                     <Col xs={12}>
-                      <Image src={record.pictureURL} />
+                      <Image src={record?.pictureURL} />
                     </Col>
-                    {/* { <Col xs={12}>
-                      {record.questions.map((d: any) => {
-                        return (
-                          <div key={d.questionID}>
-                            {" "}
-                            <Button style={{ width: "100%" }}>
-                              {d.questionID}
-                            </Button>{" "}
-                          </div>
-                        );
-                      })}
-                    </Col> }   */}
+
+                    <Col xs={12}>
+                      <div style={{ paddingLeft: "5px" }}>
+                        <Link
+                          to={(location) => ({
+                            ...location,
+                            pathname: "/sorular",
+                          })}
+                        >
+                          <h2>Sorular</h2>
+                          {record.questions.map((d: any, i: number) => {
+                            return (
+                              <div key={i}>
+                                <Button style={{ width: "100%" }}>
+                                  {d.questionID}: {d.description}
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </Link>
+                      </div>
+                    </Col>
                   </Row>
                 </div>
               );
@@ -117,7 +131,7 @@ const Testler = () => {
         />
       )}
       <CreateTest />
-      <UpdateTest/>
+      <UpdateTest />
     </div>
   );
 };

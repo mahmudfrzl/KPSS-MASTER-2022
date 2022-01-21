@@ -4,18 +4,16 @@ import axios from "axios";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import GeneralStore from "../../../store/GeneralStore";
 import PostSorular from "./PostSorular";
 import UpdateQuestion from "./UpdateQuestion";
 
-
 const Sorular = () => {
-
   useEffect(() => {
-    GeneralStore.getTestler()
+    GeneralStore.getTestler();
     GeneralStore.getSorular();
   }, []);
-
 
   return (
     <div>
@@ -24,7 +22,6 @@ const Sorular = () => {
         <Button
           onClick={() =>
             runInAction(() => {
-
               GeneralStore.create_soru = true;
             })
           }
@@ -41,16 +38,16 @@ const Sorular = () => {
             { title: "TestID", dataIndex: "testID" },
             { title: "Soru Başlığı", dataIndex: "description" },
             {
-                title: "Kapalı",
-                render: (d) => <div>{d.isClosed?"Kapalı":"Açık"}</div>,
-              },
+              title: "Kapalı",
+              render: (d) => <div>{d.isClosed ? "Kapalı" : "Açık"}</div>,
+            },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.deleted ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.status ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -60,7 +57,8 @@ const Sorular = () => {
                     onClick={() => {
                       runInAction(() => {
                         GeneralStore.soru = d;
-                        GeneralStore.question_update = !GeneralStore.question_update;
+                        GeneralStore.question_update =
+                          !GeneralStore.question_update;
                       });
                     }}
                     style={{ backgroundColor: "green", color: "#fff" }}
@@ -97,25 +95,34 @@ const Sorular = () => {
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
-                  <Col xs={24}>
-                    {record?.pictures&&record?.pictures.map((d:any)=>{
-                        return <Image key={d?.pictureID} src={d?.url} />
-                    })}    
-
+                    <Col xs={8}>
+                      {record?.pictures &&
+                        record?.pictures.map((d: any) => {
+                          return <Image key={d?.pictureID} src={d?.url} />;
+                        })}
                     </Col>
-                    {/* <Col xs={12}>
-                      <h2>Cevaplar</h2>
-                      {record.answers.map((d:any, i:number) => {
-                        return (
-                          <div key={i}>
-                            <Button style={{ width: "100%" }}>
-                              {d.answerID}: {d.correctNess ===true ? "true" :"false"}
-                            </Button>
-                          </div>
-                        );
-                      })}
-                      <hr />
-                    </Col> */}
+                    <Col xs={16}>
+                      <div style={{ paddingLeft: "5px" }}>
+                        <h2>Cevaplar</h2>
+                        {record.answers.map((d: any, i: number) => {
+                          return (
+                            <div key={i}>
+                              <Link
+                                to={(location) => ({
+                                  ...location,
+                                  pathname: "/cevaplar",
+                                })}
+                              >
+                                <Button style={{ width: "100%" }}>
+                                  {d.answerID}: {d.answerSection} -{" "}
+                                  {d.correctNess === true ? "true" : "false"}
+                                </Button>
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </Col>
                   </Row>
                 </div>
               );
@@ -124,8 +131,8 @@ const Sorular = () => {
           }}
         />
       )}
-      <UpdateQuestion/>
-      <PostSorular/>
+      <UpdateQuestion />
+      <PostSorular />
     </div>
   );
 };

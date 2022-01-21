@@ -4,13 +4,14 @@ import axios from "axios";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import GeneralStore from "../../../store/GeneralStore";
 import CreateKonu from "./CreateKonu";
 import UpdateKonular from "./UpdateKonular";
 
 const Subjects = () => {
   useEffect(() => {
-    GeneralStore.getDersler()
+    GeneralStore.getDersler();
     GeneralStore.getKonu();
   }, []);
 
@@ -38,15 +39,15 @@ const Subjects = () => {
             { title: "DersID", dataIndex: "lessonID" },
             {
               title: "Premium mu?",
-              render: (d) => <div>{d.isPremium?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.isPremium ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.deleted ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.status ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -77,8 +78,8 @@ const Subjects = () => {
                         `http://37.148.211.32:8080/api/subjects/delete?subjectID=${d.subjectID}`
                       );
                       GeneralStore.getKonu();
-                      GeneralStore.getTestler()
-                      GeneralStore.getNotlar()
+                      GeneralStore.getTestler();
+                      GeneralStore.getNotlar();
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -94,33 +95,52 @@ const Subjects = () => {
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
-                    <Col xs={12}>
+                    <Col xs={6}>
                       <Image src={record?.pictureURL} />
                     </Col>
-                    {/* <Col xs={12}>
-                      <h2>Notlar</h2>
-                      {record.notes.map((d: any, i: number) => {
-                        return (
-                          <div key={i}>
-                            <Button style={{ width: "100%" }}>
-                              {d.noteID}: {d.name}
-                            </Button>
-                          </div>
-                        );
-                      })}
-                      <hr />
-
-                      <h2>Testler</h2>
-                      {record.tests.map((d: any, i: number) => {
-                        return (
-                          <div key={i}>
-                            <Button style={{ width: "100%" }}>
-                              {d.testID}: {d.name}
-                            </Button>
-                          </div>
-                        );
-                      })}
-                    </Col> */}
+                    <Col xs={6}>
+                      <div style={{ paddingLeft: "5px" }}>
+                        <Link
+                          to={(location) => ({
+                            ...location,
+                            pathname: "/notlar",
+                          })}
+                        >
+                          <h2>Notlar</h2>
+                          {record.notes.map((d: any, i: number) => {
+                            return (
+                              <div key={i}>
+                                <Button style={{ width: "100%" }}>
+                                  {d.noteID}: {d.name}
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </Link>
+                      </div>
+                      {/* <hr /> */}
+                    </Col>
+                    <Col xs={12}>
+                      <div style={{ paddingLeft: "5px" }}>
+                        <Link
+                          to={(location) => ({
+                            ...location,
+                            pathname: "/testler",
+                          })}
+                        >
+                          <h2>Testler</h2>
+                          {record.tests.map((d: any, i: number) => {
+                            return (
+                              <div key={i}>
+                                <Button style={{ width: "100%" }}>
+                                  {d.testID}: {d.name}
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </Link>
+                      </div>
+                    </Col>
                   </Row>
                 </div>
               );

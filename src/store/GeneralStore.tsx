@@ -301,7 +301,7 @@ class GeneralStore {
   //http://localhost:8080/api/answers/create-with-open-question
   postCevap = async (values: any) => {
 
-    if(values.questionID.isClosed){
+   // if(values.questionID.isClosed ===true){
 
       const data = await axios.post(url_dersler + "/answers/create-with-close-question", values);
       this.getCevaplar();
@@ -309,14 +309,15 @@ class GeneralStore {
         this.cevap_create = false;
       });
       message.success(data.data.message);
-    }else{
-        const data = await axios.post(url_dersler + "/answers/create-with-open-question", values);
-        this.getCevaplar();
-        runInAction(() => {
-          this.cevap_create = false;
-        });
-        message.success(data.data.message);
-    }
+    // }
+    // else{
+    //     const data = await axios.post(url_dersler + "/answers/create-with-open-question", values);
+    //     this.getCevaplar();
+    //     runInAction(() => {
+    //       this.cevap_create = false;
+    //     });
+    //     message.success(data.data.message);
+    // }
 
 
 

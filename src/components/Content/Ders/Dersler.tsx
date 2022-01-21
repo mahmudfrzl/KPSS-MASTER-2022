@@ -6,6 +6,7 @@ import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateDersler from "./UpdateDersler";
 import CreateDers from "./CreateDers";
+import { Link } from "react-router-dom";
 
 const Dersler = () => {
   useEffect(() => {
@@ -36,11 +37,11 @@ const Dersler = () => {
             { title: "Hakkında", dataIndex: "description" },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.deleted ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.status ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Güncelle",
@@ -72,8 +73,7 @@ const Dersler = () => {
                       );
                       GeneralStore.getDersler();
                       GeneralStore.getKonu();
-                      GeneralStore.getTestler()
-                      
+                      GeneralStore.getTestler();
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -89,21 +89,30 @@ const Dersler = () => {
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
-                    <Col xs={12}>
+                    <Col xs={8}>
                       <Image src={record.pictureURL} />
                     </Col>
-                    {/* <Col xs={12}>
-                      {record.subjects.map((d: any) => {
-                        return (
-                          <div key={d.subjectID}>
-                            {" "}
-                            <Button style={{ width: "100%" }}>
-                              {d.subjectID}: {d.name}
-                            </Button>{" "}
-                          </div>
-                        );
-                      })}
-                    </Col> */}
+                    <Col xs={16}>
+                      <div style={{ paddingLeft: "5px" }}>
+                        <h2>Konular</h2>
+                        {record.subjects.map((d: any) => {
+                          return (
+                            <div key={d.subjectID}>
+                              <Link
+                                to={(location) => ({
+                                  ...location,
+                                  pathname: "/konular",
+                                })}
+                              >{" "}
+                              <Button style={{ width: "100%" }}>
+                                {d.subjectID}: {d.name}
+                              </Button>{" "}
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </Col>
                   </Row>
                 </div>
               );
@@ -113,7 +122,7 @@ const Dersler = () => {
         />
       )}
       <UpdateDersler />
-      <CreateDers/>
+      <CreateDers />
     </div>
   );
 };
