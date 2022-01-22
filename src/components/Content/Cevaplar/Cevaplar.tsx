@@ -91,22 +91,11 @@ const Cevaplar = () => {
             expandedRowRender: (record) => {
               return (
                 <div className="super_content" key={record.id}>
-                  <Row>
+                  <Row >
                     <Col xs={12}>
                       <Image src={record.pictureURL} />
                     </Col>
-                    {/* <Col xs={12}>
-                      {record.subjects.map((d ) => {
-                        return (
-                          <div key={d.subjectID}>
-                            {" "}
-                            <Button style={{ width: "100%" }}>
-                              {d.subjectID}: {d.name}
-                            </Button>{" "}
-                          </div>
-                        );
-                      })}
-                    </Col> */}
+
                   </Row>
                 </div>
               );

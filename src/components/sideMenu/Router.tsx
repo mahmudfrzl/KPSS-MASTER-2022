@@ -4,6 +4,7 @@ import Cevaplar from "../Content/Cevaplar/Cevaplar";
 import Dersler from "../Content/Ders/Dersler";
 import Subjects from "../Content/Konular/Subjects";
 import ListMedias from "../Content/Medias/ListMedias";
+import PushNotification from "../Content/Notification/PushNotification";
 import Note from "../Content/Notlar/Note";
 import Sorular from "../Content/Soru/Sorular";
 import Testler from "../Content/Testler/Testler";
@@ -22,6 +23,7 @@ const Router = () => {
       <Route exact path="/notlar" component={Note} />
       <Route exact path="/cevaplar" component={Cevaplar} />
       <Route exact path="/sosial-linkler" component={ListMedias} />
+      <Route exact path="/bildirimler" component={PushNotification} />
       <Route>
         <Empty description="Sayfa bulunamadı" />
       </Route>

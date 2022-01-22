@@ -88,8 +88,8 @@ const Dersler = () => {
             expandedRowRender: (record) => {
               return (
                 <div className="super_content" key={record.id}>
-                  <Row>
-                    <Col xs={8}>
+                  <Row >
+                    <Col style={{paddingBottom:5}} xs={8}>
                       <Image src={record.pictureURL} />
                     </Col>
                     <Col xs={16}>

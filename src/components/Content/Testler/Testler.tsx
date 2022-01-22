@@ -110,7 +110,7 @@ const Testler = () => {
                           })}
                         >
                           <h2>Sorular</h2>
-                          {record.questions.map((d: any, i: number) => {
+                          {record.questions&&record.questions.map((d: any, i: number) => {
                             return (
                               <div key={i}>
                                 <Button style={{ width: "100%" }}>

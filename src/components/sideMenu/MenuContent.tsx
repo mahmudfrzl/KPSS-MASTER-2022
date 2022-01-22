@@ -11,6 +11,7 @@ class MenuContents {
         { name: "Sorular", icon: "fas fa-robot" },
         { name: "Cevaplar", icon: "fas fa-file-alt" },
         { name: "Sosial linkler", icon: "fas fa-link" },
+        { name: "Bildirimler", icon: "fas fa-link" },
       ],
     },
     // {
