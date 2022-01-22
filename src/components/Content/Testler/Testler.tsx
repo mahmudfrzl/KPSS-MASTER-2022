@@ -97,11 +97,11 @@ const Testler = () => {
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
-                    <Col xs={12}>
+                    <Col xs={8}>
                       <Image src={record?.pictureURL} />
                     </Col>
 
-                    <Col xs={12}>
+                    <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
                         <Link
                           to={(location) => ({

@@ -20,6 +20,7 @@ const PostSorular = () => {
       testID: GeneralStore.soru.testID,
       isClosed: GeneralStore.soru.isClosed,
       status: GeneralStore.soru.status,
+
     });
   }, [GeneralStore.create_soru]);
   return (
@@ -65,6 +66,7 @@ const PostSorular = () => {
           <label htmlFor="image_question">Resim yukle:</label>
             <Form.Item name='pictureURL'>
               <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image_question=e.target.files[0])} type='file' />
+              
             </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">

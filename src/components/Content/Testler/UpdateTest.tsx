@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Input, Select } from "antd";
+import { Button, Drawer, Form, Image, Input, Select } from "antd";
 import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
@@ -58,6 +58,7 @@ const UpdateKonular = () => {
           })}
           <label htmlFor="image">Resim yukle:</label>
             <Form.Item name='pictureURL'>
+            <Image style={{width:200,height:200,objectFit:"contain"}} src={GeneralStore.test.pictureURL} alt="" />
               <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
             </Form.Item>
             <label htmlFor="status">Status</label>

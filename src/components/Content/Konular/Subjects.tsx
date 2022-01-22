@@ -107,7 +107,7 @@ const Subjects = () => {
                           })}
                         >
                           <h2>Notlar</h2>
-                          {record.notes.map((d: any, i: number) => {
+                          {record.notes&&record.notes.map((d: any, i: number) => {
                             return (
                               <div key={i}>
                                 <Button style={{ width: "100%" }}>
@@ -129,7 +129,7 @@ const Subjects = () => {
                           })}
                         >
                           <h2>Testler</h2>
-                          {record.tests.map((d: any, i: number) => {
+                          {record.tests&&record.tests.map((d: any, i: number) => {
                             return (
                               <div key={i}>
                                 <Button style={{ width: "100%" }}>

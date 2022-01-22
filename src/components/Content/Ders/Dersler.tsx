@@ -95,7 +95,7 @@ const Dersler = () => {
                     <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
                         <h2>Konular</h2>
-                        {record.subjects.map((d: any) => {
+                        {record.subjects&&record.subjects.map((d: any) => {
                           return (
                             <div key={d.subjectID}>
                               <Link

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Input, Select } from "antd";
+import { Button, Drawer, Form, Image, Input, Select } from "antd";
 import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
@@ -10,7 +10,7 @@ const UpdateDersler = () => {
   const updatedData = [
     { key: "lessonID", label: "DersID" },
     { key: "name", label: "İsim" },
-    { key: "description", label: "Hakkinda" },
+    { key: "description", label: "Hakkinda" }
     
   ];
 
@@ -21,7 +21,7 @@ const UpdateDersler = () => {
         lessonID: GeneralStore.ders.lessonID,
         name: GeneralStore.ders.name,
         status: GeneralStore.ders.status,
-        description:GeneralStore.ders.description
+        description:GeneralStore.ders.description,
       });
 
     
@@ -30,7 +30,7 @@ const UpdateDersler = () => {
     <div> 
       <Drawer
         width={window.innerWidth / 3}
-        title={"Gencelleme"}
+        title={"Güncelleme"}
         placement="right"
         onClose={() =>
           runInAction(
@@ -51,10 +51,9 @@ const UpdateDersler = () => {
             );
           })}
           <label htmlFor="image">Resim yukle:</label>
+            <Image style={{width:200,height:200,objectFit:"contain"}} src={GeneralStore.ders.pictureURL} alt="" />
             <Form.Item name='pictureURL'>
               <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
-             
-              
             </Form.Item>
             <label htmlFor="status">Status</label>
           <Form.Item name="status">

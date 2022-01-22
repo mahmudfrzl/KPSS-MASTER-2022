@@ -4,6 +4,7 @@ import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
+import axios from "axios";
 const { Option } = Select;
 const UpdateNote = () => {
   const [form] = useForm();
@@ -68,10 +69,13 @@ const UpdateNote = () => {
               <Option value="false">Deaktiv </Option>
             </Select>
           </Form.Item>
-          <label htmlFor="">Guncellenecek resim:</label>
-          <Form.Item name="pictureURL">
+          
+          {GeneralStore.not.hasPicture ? ( <Form.Item name="pictureURL">
+          {<label htmlFor="">Guncellenecek resim:</label>}  
             <Select>
-              {GeneralStore.not.pictures &&
+              {
+                GeneralStore.not.pictures &&  GeneralStore.not.pictures.length>0 ?(
+
                 GeneralStore.not.pictures.map((a: any) => {
                   return (
                     <Select.Option value={a.pictureID}>
@@ -83,22 +87,45 @@ const UpdateNote = () => {
                         <Image
                           preview={false}
                           src={a.url}
-                        /> <br />
-                        <label htmlFor="image">Resim yukle:</label>
+                          /> <br />
                         <Input
                           onChange={(e: any) =>
                             runInAction(
                               () => (GeneralStore.image = e.target.files[0])
-                            )
-                          }
-                          type="file"
-                        />
+                              )
+                            }
+                            type="file"
+                            />
                       </div>
                     </Select.Option>
                   );
-                })}
+                })
+                ):(
+                  <Select.Option value={1}>
+                  <div>
+
+                  <Input
+                    onChange  ={async(e: any) => {
+                      //http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=1
+                      const url=`http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${GeneralStore.not.noteID}`
+                      const fd=new FormData();
+                      fd.append('pictureURL',e.target.files[0])
+                      await axios.post(url,fd)
+                      GeneralStore.getNotlar()
+                      runInAction(()=>{})
+                    }}
+                    type="file"
+                  />
+                  </div>
+                </Select.Option>
+                )
+            
+              }
+
             </Select>
-          </Form.Item>
+          </Form.Item>):""
+          }
+          
           <Form.Item>
             <Button htmlType="submit" type="primary">
               Guncelle

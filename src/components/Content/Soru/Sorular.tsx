@@ -92,6 +92,7 @@ const Sorular = () => {
           ]}
           expandable={{
             expandedRowRender: (record) => {
+              
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
@@ -104,7 +105,7 @@ const Sorular = () => {
                     <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
                         <h2>Cevaplar</h2>
-                        {record.answers.map((d: any, i: number) => {
+                        {record.answers&&record.answers.map((d: any, i: number) => {
                           return (
                             <div key={i}>
                               <Link

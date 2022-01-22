@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Form, Input, Select } from "antd";
+import { Button, Drawer, Form, Image, Input, Select } from "antd";
 import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
@@ -27,7 +27,7 @@ const UpdateKonular = () => {
     <div>
       <Drawer
         width={window.innerWidth / 3}
-        title={"Gencelleme"}
+        title={"Güncelleme"}
         placement="right"
         onClose={() =>
           runInAction(
@@ -58,7 +58,8 @@ const UpdateKonular = () => {
           })}
           <label htmlFor="image">Resim yukle:</label>
             <Form.Item name='pictureURL'>
-              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.konu.pictureURL=e.target.files[0])} type='file' />
+            <Image style={{width:200,height:200,objectFit:"contain"}} src={GeneralStore.konu.pictureURL} alt="" />
+              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
             </Form.Item>
             <label htmlFor="isPremium">Premium mu?</label>
           <Form.Item name="isPremium">

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer,Image, Form, Input, Select } from "antd";
+import { Button, Drawer, Image, Form, Input, Select } from "antd";
 import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
-import { runInAction } from "mobx";
+import { runInAction, toJS } from "mobx";
+import axios from "axios";
 const { Option } = Select;
-
 
 const UpdateQuestion = () => {
   const [form] = useForm();
-  const updatedData = [
-    { key: "description", label: "Soru Başlığı" }
-
-];
+  const updatedData = [{ key: "description", label: "Soru Başlığı" }];
 
   useEffect(() => {
     form.setFieldsValue({
@@ -23,6 +20,7 @@ const UpdateQuestion = () => {
       description: GeneralStore.soru.description,
     });
   }, [GeneralStore.question_update]);
+  console.log(toJS(GeneralStore.soru.pictures))
   return (
     <div>
       <Drawer
@@ -37,13 +35,16 @@ const UpdateQuestion = () => {
         visible={GeneralStore.question_update}
       >
         <Form onFinish={GeneralStore.updateSorular} form={form}>
-        <label htmlFor="testID">Test</label>
-        <Form.Item name='testID'>
+          <label htmlFor="testID">Test</label>
+          <Form.Item name="testID">
             <Select>
-              {GeneralStore.testler.map(d=>{
-              return <Option value={d.questionID} key={d.testID}>{d.testID} - {d.name}</Option>
-            })}
-
+              {GeneralStore.testler.map((d) => {
+                return (
+                  <Option value={d.questionID} key={d.testID}>
+                    {d.testID} - {d.name}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           {updatedData.map((d, i) => {
@@ -80,32 +81,53 @@ const UpdateQuestion = () => {
           <label htmlFor="">Guncellenecek resim:</label>
           <Form.Item name="pictureURL">
             <Select>
-              {
-                GeneralStore.soru.pictures && 
-                GeneralStore.soru.pictures.map((a:any)=>{
+              {GeneralStore.soru.pictures&&GeneralStore.soru.pictures.length>0 ? (
+                GeneralStore.soru.pictures.map((a: any) => {
                   return (
                     <Select.Option value={a.pictureID}>
-                        <div onClick={()=> runInAction(() =>(
-                          GeneralStore.img_question_id = a.pictureID
-                        ))}>
-                        <Image
-                          preview={false}
-                          src={a.url}
-                        /> <br />
-                        <label htmlFor="image_question">Resim yukle:</label>
+                      <div
+                        onClick={() =>
+                          runInAction(
+                            () => (GeneralStore.img_question_id = a.pictureID)
+                          )
+                        }
+                      >
+                        <Image preview={false} src={a.url} /> <br />
+               
                         <Input
-                          onChange={(e: any) =>
+                          onChange={(e: any) =>{
                             runInAction(
-                              () => (GeneralStore.image_question = e.target.files[0])
+                              () =>
+                                (GeneralStore.image_question =
+                                  e.target.files[0])
                             )
+                          }
                           }
                           type="file"
                         />
                       </div>
                     </Select.Option>
-                  )
+                  );
                 })
-              }
+              ) : (
+                <Select.Option value={1}>
+                  <div>
+
+                  <label htmlFor="image_question">Resim guncelle:</label>
+                  <Input
+                    onChange={async(e: any) => {
+                      const url=`http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=${GeneralStore.soru.questionID}`
+                      const fd=new FormData();
+                      fd.append('pictureURL',e.target.files[0])
+                      await axios.post(url,fd)
+                      GeneralStore.getSorular()
+                      runInAction(()=>{})
+                    }}
+                    type="file"
+                  />
+                  </div>
+                </Select.Option>
+              )}
             </Select>
           </Form.Item>
           <Form.Item>
