@@ -6,41 +6,49 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const UserLogin = () => {
+const AdminSignup = () => {
   const history = useHistory();
+  const [admin, setAdmin] = useState({ username: "", email: "", password: "" });
   const [form] = useForm();
-  const [admin, setAdmin] = useState({ email: "", password: "" });
-
   const updatedData = [
+    { key: "username", label: "Username" },
     { key: "email", label: "Email" },
     { key: "password", label: "Password" },
   ];
-
-  const onInputChange = (e: any) => {
-    setAdmin({ email: e.target.value, password: e.target.value });
-  };
-
-  const login = async (event: any) => {
+  const signup = async (event: any) => {
     const data = await axios.post(
-      "http://37.148.211.32:8080/api/admins/log-in",
+      "http://37.148.211.32:8080/api/admins/sign-up",
       event
     );
-
-
     message.success(data.data.message);
 
     if (data.data.success === true) {
-      runInAction(() => history.push("/dersler"));
+      runInAction(() => history.push("/log-in"));
     } else {
       message.error(data.data.message);
     }
   };
   useEffect(() => {
     form.setFieldsValue({
+      username: "",
       email: "",
       password: "",
     });
-  }, [login]);
+  }, [signup]);
+
+  //   React.useEffect(() => {
+  //     form.setFieldsValue({
+  //       username: 'Bamboo',
+  //     });
+  //   }, []);
+
+  const onInputChange = (e: any) => {
+    setAdmin({
+      username: e.target.value,
+      email: e.target.value,
+      password: e.target.value,
+    });
+  };
 
   return (
     <div>
@@ -53,15 +61,16 @@ const UserLogin = () => {
         id="login"
       >
         <Form
+          //      onChange={onInputChange}
           form={form}
           style={{
-            padding: "20px",
+            padding: "10px",
             borderRadius: "10px",
             boxShadow: "1px 1px 10px 10px rgba(0, 0, 0, 0.2)",
             width: 370,
           }}
-
-          onFinish={login}
+          //      initialValues={{ remember: true }}
+          onFinish={signup}
         >
           <div
             style={{
@@ -115,6 +124,32 @@ const UserLogin = () => {
               justifyContent: "center",
             }}
           >
+            <label htmlFor="username">Username:</label>
+          </div> */}
+          {/* <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Form.Item
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: "Xahiş edirik username daxil edin.",
+                },
+              ]}
+            >
+              <Input style={{ width: 300 }} />
+            </Form.Item>
+          </div> */}
+          {/* <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <label htmlFor="email">E-mail:</label>
           </div>
           <div
@@ -125,17 +160,17 @@ const UserLogin = () => {
           >
             <Form.Item
               name="email"
-              // rules={[
-              //   {
-              //     required: true,
-              //     message: "Xahiş edirik e-poçt ünvanınızı daxil edin.",
-              //   },
-              // ]}
+              rules={[
+                {
+                  required: true,
+                  message: "Xahiş edirik e-poçt ünvanınızı daxil edin.",
+                },
+              ]}
             >
               <Input type="email" style={{ width: 300 }} />
             </Form.Item>
-          </div> */}
-          {/* <div
+          </div>
+          <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -151,7 +186,6 @@ const UserLogin = () => {
           >
             <Form.Item
               name="password"
-              valuePropName={admin.password}
               rules={[
                 {
                   required: true,
@@ -169,11 +203,11 @@ const UserLogin = () => {
               justifyContent: "center",
             }}
           >
-            {/* <div>
+            <div>
               <Form.Item name="remember" valuePropName="checked">
                 <Checkbox>Məni xatırla</Checkbox>
               </Form.Item>
-            </div> */}
+            </div>
 
             <div>
               <Form.Item>
@@ -184,14 +218,14 @@ const UserLogin = () => {
             </div>
           </div>
           <div>
-            <Form.Item name="sign-up">
+            <Form.Item name="login">
               <a
                 className="forgot_pass"
                 onClick={() => {
-                  history.push("/sign-up");
+                  history.push("/log-in");
                 }}
               >
-                Sign up
+                Log in
               </a>
             </Form.Item>
           </div>
@@ -201,4 +235,4 @@ const UserLogin = () => {
   );
 };
 
-export default observer(UserLogin);
+export default observer(AdminSignup);

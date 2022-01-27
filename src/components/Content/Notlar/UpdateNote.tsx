@@ -17,6 +17,8 @@ const UpdateNote = () => {
       noteDescription: GeneralStore.not.noteDescription,
       status: GeneralStore.not.status,
     });
+    GeneralStore.getKonu()
+    GeneralStore.getNotlar();
   }, [GeneralStore.note_update]);
   return (
     <div>
@@ -70,7 +72,7 @@ const UpdateNote = () => {
             </Select>
           </Form.Item>
           
-          {GeneralStore.not.hasPicture ? ( <Form.Item name="pictureURL">
+          {GeneralStore.not.hasPicture===true ? ( <Form.Item name="pictureURL">
           {<label htmlFor="">Guncellenecek resim:</label>}  
             <Select>
               {

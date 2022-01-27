@@ -12,7 +12,7 @@ const CreateDers = () => {
     { key: "description", label: "Hakkinda" },
     { key: "name", label: "İsim" },
   ];
-
+                         //form UserForm istifade ele fieldsValue set zad
   useEffect(() => {
     form.setFieldsValue({
       lessonID: "",
@@ -31,7 +31,7 @@ const CreateDers = () => {
           )
         }
         visible={GeneralStore.ders_create}
-      >
+      > 
         <Form onFinish={GeneralStore.postDers} form={form}>
           {updatedData.map((d, i) => {
             return (

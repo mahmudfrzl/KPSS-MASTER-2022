@@ -41,8 +41,15 @@ class GeneralStore {
 
   image_question: any = {};
   img_question_id: number = 0;
+
+  description: any = {};
+
+   
+
   constructor() {
     makeAutoObservable(this);
+
+    
   }
 
   getDersler = async () => {
@@ -259,8 +266,16 @@ class GeneralStore {
   };
   //http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=1
   postSorular = async (values: any) => {
+    console.log(values.description);
+    
     const fd = new FormData();
     fd.append("pictureURL", this.image_question);
+    values.description = this.description
+  
+  
+    console.log(values.description);
+    
+    
 
     const data: any = await axios.post(
       `${url_dersler}/questions/create`,

@@ -10,7 +10,7 @@ const CreateNote = () => {
   const [form] = useForm();
   const updatedData = [
     { key: "noteDescription", label: "Not" }
-  ];
+  ]; 
 
   useEffect(() => {
     form.setFieldsValue({

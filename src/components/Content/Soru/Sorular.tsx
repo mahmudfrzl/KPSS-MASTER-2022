@@ -1,5 +1,4 @@
-import { Col, Popconfirm, Row, Table, Image } from "antd";
-import { Button } from "antd/lib/radio";
+import { Col, Popconfirm, Row, Table, Image, Button } from "antd";
 import axios from "axios";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -8,11 +7,23 @@ import { Link } from "react-router-dom";
 import GeneralStore from "../../../store/GeneralStore";
 import PostSorular from "./PostSorular";
 import UpdateQuestion from "./UpdateQuestion";
+import { Drawer, Form, Input, Select } from "antd";
+import { Option } from "antd/lib/mentions";
+import { useForm } from "antd/lib/form/Form";
 
 const Sorular = () => {
+  const [form] = useForm();
+  const updatedData = [{ key: "answerSection", label: "Cevap" }];
+
   useEffect(() => {
+    form.setFieldsValue({
+      correctNess: GeneralStore.cevap.correctNess,
+      answerSection: GeneralStore.cevap.answerSection,
+      questionID: GeneralStore.cevap.questionID,
+    });
     GeneralStore.getTestler();
     GeneralStore.getSorular();
+    GeneralStore.getCevaplar();
   }, []);
 
   return (
@@ -92,7 +103,6 @@ const Sorular = () => {
           ]}
           expandable={{
             expandedRowRender: (record) => {
-              
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
@@ -105,23 +115,58 @@ const Sorular = () => {
                     <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
                         <h2>Cevaplar</h2>
-                        {record.answers&&record.answers.map((d: any, i: number) => {
-                          return (
-                            <div key={i}>
-                              <Link
-                                to={(location) => ({
-                                  ...location,
-                                  pathname: "/cevaplar",
-                                })}
-                              >
-                                <Button style={{ width: "100%" }}>
-                                  {d.answerID}: {d.answerSection} -{" "}
-                                  {d.correctNess === true ? "true" : "false"}
-                                </Button>
-                              </Link>
-                            </div>
-                          );
-                        })}
+                        {record.answers &&
+                          record.answers.map((d: any, i: number) => {
+                            return (
+                              <div key={i}>
+                                <Link
+                                  to={(location) => ({
+                                    ...location,
+                                    pathname: "/cevaplar",
+                                  })}
+                                >
+                                  <Button style={{ width: "100%" }}>
+                                    {d.answerID}: {d.answerSection} -{" "}
+                                    {d.correctNess === true ? "true" : "false"}
+                                  </Button>
+                                </Link>
+                              </div>
+                            );
+                          })}
+                          {record.answers&&record.answers.length >=5 ? "":
+                         
+                        <Form onFinish={GeneralStore.postCevap} form={form}>
+                          <label htmlFor="questionID">Soru ID</label>
+                          
+                          <Form.Item name="questionID" key={record.id} >
+                            <Input />
+                          </Form.Item>
+
+                          {updatedData.map((d, i) => {
+                            return (
+                              <div key={i}>
+                                <label htmlFor={d.key}>{d.label}:</label>
+                                <Form.Item name={d.key}>
+                                  <Input />
+                                </Form.Item>
+                              </div>
+                            );
+                          })}
+                          <label htmlFor="correctNess">Durum</label>
+                          <Form.Item name="correctNess">
+                            <Select>
+                              <Option value="true">Doğru</Option>
+                              <Option value="false">Yanlış</Option>
+                            </Select>
+                          </Form.Item>
+
+                          <Form.Item>
+                            <Button htmlType="submit" type="primary">
+                              Ekle
+                            </Button>
+                          </Form.Item>
+                        </Form> 
+                         } 
                       </div>
                     </Col>
                   </Row>
