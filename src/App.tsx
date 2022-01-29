@@ -8,17 +8,17 @@ import SideMenu from "./components/sideMenu/SideMenu";
 import UserLogin from "./components/sideMenu/UserLogin";
 import { ComponentThatHides } from "./layers/ComponentToHide";
 import Dashboard from "./layers/Dashboard";
+
 // import RegLogStore from "./store/RegLogStore";
 
 const App = () => {
   return (
+
     <div>
+      
        <Route exact path="/log-in" component={UserLogin} />
        <Route exact path="/sign-up" component={AdminSignup} />
-
         <ComponentThatHides/>
-
-
     </div>
   );
 };

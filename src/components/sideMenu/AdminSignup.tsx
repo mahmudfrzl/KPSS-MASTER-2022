@@ -13,7 +13,6 @@ const AdminSignup = () => {
   const updatedData = [
     { key: "username", label: "Username" },
     { key: "email", label: "Email" },
-    { key: "password", label: "Password" },
   ];
   const signup = async (event: any) => {
     const data = await axios.post(
@@ -32,7 +31,7 @@ const AdminSignup = () => {
     form.setFieldsValue({
       username: "",
       email: "",
-      password: "",
+      password:""
     });
   }, [signup]);
 
@@ -118,6 +117,32 @@ const AdminSignup = () => {
               </div>
             );
           })}
+                    <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <label htmlFor="password">Şifre</label>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Şifrenizi giriniz",
+                },
+              ]}
+            >
+              <Input.Password style={{ width: 300 }} />
+            </Form.Item>
+          </div>
           {/* <div
             style={{
               display: "flex",
@@ -169,33 +194,8 @@ const AdminSignup = () => {
             >
               <Input type="email" style={{ width: 300 }} />
             </Form.Item>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <label htmlFor="password">Şifrə:</label>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Xahiş edirik şifrənizi daxil edin.",
-                },
-              ]}
-            >
-              <Input.Password style={{ width: 300 }} />
-            </Form.Item>
           </div> */}
+
 
           <div
             style={{

@@ -37,6 +37,10 @@ const Cevaplar = () => {
             { title: "SoruID", dataIndex: "questionID" },
             { title: "Soru Başlığı", dataIndex: "questionDescription" },
             {
+              title: "Kapalımı",
+              render: (d) => <div>{d.isClosed?"Kapalı":`Açık`}</div>,
+            },
+            {
                 title: "Durum",
                 render: (d) => <div>{d.correctNess?"Doğru":`Yanlış`}</div>,
               },
@@ -66,7 +70,7 @@ const Cevaplar = () => {
                 </div>
               ),
             },
-            {
+            { 
               title: "Sil",
               render: (d) => (
                 <div>
@@ -74,7 +78,7 @@ const Cevaplar = () => {
                     title="Silmek istediğinizden emin misiniz?"
                     onConfirm={async () => {
                       await axios.delete(
-                        `http://localhost:8080/api/answers/delete?answerID=${d.answerID}`
+                        `http://37.148.211.32:8080/api/answers/delete?answerID=${d.answerID}`
                       );
                       GeneralStore.getCevaplar();
                     }}

@@ -10,6 +10,7 @@ import UpdateQuestion from "./UpdateQuestion";
 import { Drawer, Form, Input, Select } from "antd";
 import { Option } from "antd/lib/mentions";
 import { useForm } from "antd/lib/form/Form";
+import PostCevap from "../Cevaplar/PostCevap";
 
 const Sorular = () => {
   const [form] = useForm();
@@ -20,6 +21,7 @@ const Sorular = () => {
       correctNess: GeneralStore.cevap.correctNess,
       answerSection: GeneralStore.cevap.answerSection,
       questionID: GeneralStore.cevap.questionID,
+      isClosed: GeneralStore.cevap.isClosed,
     });
     GeneralStore.getTestler();
     GeneralStore.getSorular();
@@ -133,40 +135,47 @@ const Sorular = () => {
                               </div>
                             );
                           })}
-                          {record.answers&&record.answers.length >=5 ? "":
-                         
-                        <Form onFinish={GeneralStore.postCevap} form={form}>
-                          <label htmlFor="questionID">Soru ID</label>
-                          
-                          <Form.Item name="questionID" key={record.id} >
-                            <Input />
-                          </Form.Item>
+                        {record.answers && record.answers.length >= 5 ? (
+                          ""
+                        ) : (
+                          <Form onFinish={GeneralStore.postCevap} form={form}>
+                            <label htmlFor="questionID">Soru ID</label>
 
-                          {updatedData.map((d, i) => {
-                            return (
-                              <div key={i}>
-                                <label htmlFor={d.key}>{d.label}:</label>
-                                <Form.Item name={d.key}>
-                                  <Input />
-                                </Form.Item>
-                              </div>
-                            );
-                          })}
-                          <label htmlFor="correctNess">Durum</label>
-                          <Form.Item name="correctNess">
-                            <Select>
-                              <Option value="true">Doğru</Option>
-                              <Option value="false">Yanlış</Option>
-                            </Select>
-                          </Form.Item>
+                            <Form.Item name="questionID" key={record.id}>
+                              <Input />
+                            </Form.Item>
 
-                          <Form.Item>
-                            <Button htmlType="submit" type="primary">
-                              Ekle
-                            </Button>
-                          </Form.Item>
-                        </Form> 
-                         } 
+                            {updatedData.map((d, i) => {
+                              return (
+                                <div key={i}>
+                                  <label htmlFor={d.key}>{d.label}:</label>
+                                  <Form.Item name={d.key}>
+                                    <Input />
+                                  </Form.Item>
+                                </div>
+                              );
+                            })}
+                            <label htmlFor="correctNess">Durum</label>
+                            <Form.Item name="correctNess">
+                              <Select>
+                                <Option value="true">Doğru</Option>
+                                <Option value="false">Yanlış</Option>
+                              </Select>
+                            </Form.Item>
+                            <label htmlFor="isClosed">Kapalımı</label>
+                            <Form.Item name="isClosed">
+                              <Select>
+                                <Option value="true">Kapalı</Option>
+                                <Option value="false">Açık</Option>
+                              </Select>
+                            </Form.Item>
+                            <Form.Item>
+                              <Button htmlType="submit" type="primary">
+                                Ekle
+                              </Button>
+                            </Form.Item>
+                          </Form>
+                        )}
                       </div>
                     </Col>
                   </Row>
@@ -179,6 +188,7 @@ const Sorular = () => {
       )}
       <UpdateQuestion />
       <PostSorular />
+      <PostCevap/>
     </div>
   );
 };

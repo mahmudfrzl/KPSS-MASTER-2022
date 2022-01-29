@@ -2,16 +2,24 @@ import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import GeneralStore from "../../../store/GeneralStore";
-import { Table, Image, Button, Row, Col, Popconfirm } from "antd";
+import { Table, Image,  Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateTest from "./UpdateTest";
 import CreateTest from "./CreateTest";
+import { Button, Drawer, Form, Input, Select } from "antd";
 import { Link } from "react-router-dom";
+import { Option } from "antd/lib/mentions";
+import { useForm } from "antd/lib/form/Form";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 const Testler = () => {
+  const [form] = useForm();
+  const img_num = 0;
+  const updatedData = [{ key: "description", label: "Soru Başlığı" }];
   useEffect(() => {
     GeneralStore.getKonu();
     GeneralStore.getTestler();
-  }, []);
+  },  [GeneralStore.create_soru]);
 
   return (
     <div>
@@ -110,16 +118,78 @@ const Testler = () => {
                           })}
                         >
                           <h2>Sorular</h2>
-                          {record.questions&&record.questions.map((d: any, i: number) => {
+                          {record.questions &&
+                            record.questions.map((d, i) => {
+                              return (
+                                <div key={i}>
+                                  <Button style={{ width: "100%" }}>
+                                    {d.questionID}: {d.description}
+                                  </Button>
+                                </div>
+                              );
+                            })}
+                        </Link>
+                        <Form onFinish={GeneralStore.postSorular} form={form}>
+                          <label htmlFor="testID">Test</label>
+                          <Form.Item name="testID">
+                            <Input/>
+                          </Form.Item>
+                          {updatedData.map((d, i) => {
                             return (
                               <div key={i}>
-                                <Button style={{ width: "100%" }}>
-                                  {d.questionID}: {d.description}
-                                </Button>
+                                <label htmlFor={d.key}>{d.label}:</label>
+                                <Form.Item name={d.key}>
+                                  <CKEditor
+                                    editor={ClassicEditor}
+                                    onChange={(event, editor) => {
+                                      const data = editor.getData();
+                                      // const setData = <div contentEditable='true' setInnerHTML={{_html:data}}></div>;
+                                      console.log(data);
+                                      console.log(editor);
+                                      runInAction(
+                                        () => (GeneralStore.description = data)
+                                      );
+                                    }}
+                                    // onChange={(event, editor) => {
+                                    //   const data = editor.getData();
+                                    //   setDescription(data);
+                                    // }}
+                                  />
+                                </Form.Item>
                               </div>
                             );
                           })}
-                        </Link>
+                          <label htmlFor="isClosed">Kapalı</label>
+                          <Form.Item name="isClosed">
+                            <Select>
+                              <Option value="true">Kapalı</Option>
+                              <Option value="false">Açık</Option>
+                            </Select>
+                          </Form.Item>
+                          <label htmlFor="image_question">Resim yukle:</label>
+                          <Form.Item name="pictureURL">
+                            <Input
+                              onChange={(e) =>
+                                
+                                runInAction(
+                                  () =>
+                                    (GeneralStore.image_question = e.target.files[GeneralStore.img_question_id],GeneralStore.img_question_id++)
+                                    
+                                )
+                              }
+                              type="file"
+                            />
+                          </Form.Item>
+                          <Form.Item>
+                            <Button
+                              id="submit"
+                              htmlType="submit"
+                              type="primary"
+                            >
+                              Gonder
+                            </Button>
+                          </Form.Item>
+                        </Form> 
                       </div>
                     </Col>
                   </Row>

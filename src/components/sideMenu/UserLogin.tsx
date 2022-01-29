@@ -11,10 +11,7 @@ const UserLogin = () => {
   const [form] = useForm();
   const [admin, setAdmin] = useState({ email: "", password: "" });
 
-  const updatedData = [
-    { key: "email", label: "Email" },
-    { key: "password", label: "Password" },
-  ];
+  const updatedData = [{ key: "email", label: "Email" }];
 
   const onInputChange = (e: any) => {
     setAdmin({ email: e.target.value, password: e.target.value });
@@ -25,14 +22,12 @@ const UserLogin = () => {
       "http://37.148.211.32:8080/api/admins/log-in",
       event
     );
-
-
-    message.success(data.data.message);
+    data.data.success === true
+      ? message.success(data.data.message)
+      : message.error(data.data.message);
 
     if (data.data.success === true) {
       runInAction(() => history.push("/dersler"));
-    } else {
-      message.error(data.data.message);
     }
   };
   useEffect(() => {
@@ -60,7 +55,6 @@ const UserLogin = () => {
             boxShadow: "1px 1px 10px 10px rgba(0, 0, 0, 0.2)",
             width: 370,
           }}
-
           onFinish={login}
         >
           <div
@@ -109,6 +103,32 @@ const UserLogin = () => {
               </div>
             );
           })}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <label htmlFor="password">Şifre</label>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Şifrenizi giriniz",
+                },
+              ]}
+            >
+              <Input.Password style={{ width: 300 }} />
+            </Form.Item>
+          </div>
           {/* <div
             style={{
               display: "flex",
@@ -133,33 +153,6 @@ const UserLogin = () => {
               // ]}
             >
               <Input type="email" style={{ width: 300 }} />
-            </Form.Item>
-          </div> */}
-          {/* <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <label htmlFor="password">Şifrə:</label>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Form.Item
-              name="password"
-              valuePropName={admin.password}
-              rules={[
-                {
-                  required: true,
-                  message: "Xahiş edirik şifrənizi daxil edin.",
-                },
-              ]}
-            >
-              <Input.Password style={{ width: 300 }} />
             </Form.Item>
           </div> */}
 

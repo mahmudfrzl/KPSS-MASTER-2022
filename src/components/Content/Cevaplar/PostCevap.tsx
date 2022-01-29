@@ -17,6 +17,7 @@ const PostCevaplar = () => {
       correctNess: GeneralStore.cevap.correctNess,
       answerSection: GeneralStore.cevap.answerSection,
       questionID: GeneralStore.cevap.questionID,
+      isClosed: GeneralStore.cevap.isClosed,
     
     });
   }, [GeneralStore.cevap_create]);
@@ -33,7 +34,10 @@ const PostCevaplar = () => {
         }
         visible={GeneralStore.cevap_create}
       >
-        <Form onFinish={GeneralStore.postCevap} form={form}>
+        <div style={{textAlign: "center"}}>
+        <label style={{fontSize: 20}}>Kapalı Soru</label>
+        </div>
+        <Form onFinish={ GeneralStore.postCevap} form={form}>
         <label htmlFor="questionID">Soru</label>
         <Form.Item name='questionID'>
             <Select>
@@ -60,6 +64,13 @@ const PostCevaplar = () => {
               <Option value="false">Yanlış</Option>
             </Select>
           </Form.Item>
+          <label htmlFor="isClosed">Kapalımı</label>
+          <Form.Item name="isClosed">
+            <Select>
+              <Option value="true">Kapalı</Option>
+              <Option value="false">Açık</Option>
+            </Select>
+          </Form.Item>
          
           <Form.Item>
             <Button htmlType="submit" type="primary">
@@ -67,6 +78,7 @@ const PostCevaplar = () => {
             </Button>
           </Form.Item>
         </Form>
+
       </Drawer>
     </div>
   );

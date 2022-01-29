@@ -64,7 +64,7 @@ const CreateNote = () => {
           </Form.Item>
           <label htmlFor="image">Resim yukle:</label>
             <Form.Item name='pictureURL'>
-              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image=e.target.files[0])} type='file' />
+              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image_note=e.target.files[0])} type='file' />
             </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">

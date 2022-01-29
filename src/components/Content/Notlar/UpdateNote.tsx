@@ -16,6 +16,7 @@ const UpdateNote = () => {
       subjectID: GeneralStore.not.subjectID,
       noteDescription: GeneralStore.not.noteDescription,
       status: GeneralStore.not.status,
+      hasPicture:GeneralStore.not.hasPicture,
     });
     GeneralStore.getKonu()
     GeneralStore.getNotlar();
@@ -71,6 +72,13 @@ const UpdateNote = () => {
               <Option value="false">Deaktiv </Option>
             </Select>
           </Form.Item>
+          <label htmlFor="hasPicture">Şekillimi?</label>
+          <Form.Item name="hasPicture">
+            <Select>
+              <Option value="true">Şekilli</Option>
+              <Option value="false">Şekil</Option>
+            </Select>
+          </Form.Item>
           
           {GeneralStore.not.hasPicture===true ? ( <Form.Item name="pictureURL">
           {<label htmlFor="">Guncellenecek resim:</label>}  
@@ -91,11 +99,13 @@ const UpdateNote = () => {
                           src={a.url}
                           /> <br />
                         <Input
-                          onChange={(e: any) =>
+                          onChange={(e: any) =>{
+
                             runInAction(
-                              () => (GeneralStore.image = e.target.files[0])
+                              () => (GeneralStore.image_note = e.target.files[0])
                               )
                             }
+                          }
                             type="file"
                             />
                       </div>
@@ -105,7 +115,7 @@ const UpdateNote = () => {
                 ):(
                   <Select.Option value={1}>
                   <div>
-
+                  <label htmlFor="image_note">Resim guncelle:</label>
                   <Input
                     onChange  ={async(e: any) => {
                       //http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=1

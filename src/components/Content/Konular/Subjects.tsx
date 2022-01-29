@@ -1,5 +1,4 @@
 import { Col, Popconfirm, Row, Table, Image } from "antd";
-import { Button } from "antd/lib/radio";
 import axios from "axios";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -9,10 +8,24 @@ import GeneralStore from "../../../store/GeneralStore";
 import CreateKonu from "./CreateKonu";
 import UpdateKonular from "./UpdateKonular";
 
+import { Button, Drawer, Form, Input, Select } from "antd";
+import { Option } from "antd/lib/mentions";
+import { useForm } from "antd/lib/form/Form";
+
 const Subjects = () => {
+  const [form] = useForm();
+  const updatedDataNote = [{ key: "noteDescription", label: "Not" }];
+  const updatedDataTest = [{ key: "name", label: "İsim" }];
   useEffect(() => {
     GeneralStore.getDersler();
     GeneralStore.getKonu();
+    form.setFieldsValue({
+      subjectID: GeneralStore.test.subjectID,
+
+      deleted: GeneralStore.test.deleted,
+      name: GeneralStore.test.name,
+      testID: GeneralStore.test.testID,
+    });
   }, []);
 
   return (
@@ -107,18 +120,18 @@ const Subjects = () => {
                           })}
                         >
                           <h2>Notlar</h2>
-                          {record.notes&&record.notes.map((d: any, i: number) => {
-                            return (
-                              <div key={i}>
-                                <Button style={{ width: "100%" }}>
-                                  {d.noteID}: {d.name}
-                                </Button>
-                              </div>
-                            );
-                          })}
+                          {record.notes &&
+                            record.notes.map((d: any, i: number) => {
+                              return (
+                                <div key={i}>
+                                  <Button style={{ width: "100%" }}>
+                                    {d.noteID}: {d.name}
+                                  </Button>
+                                </div>
+                              );
+                            })}
                         </Link>
                       </div>
-                      {/* <hr /> */}
                     </Col>
                     <Col xs={12}>
                       <div style={{ paddingLeft: "5px" }}>
@@ -129,16 +142,61 @@ const Subjects = () => {
                           })}
                         >
                           <h2>Testler</h2>
-                          {record.tests&&record.tests.map((d: any, i: number) => {
-                            return (
-                              <div key={i}>
-                                <Button style={{ width: "100%" }}>
-                                  {d.testID}: {d.name}
-                                </Button>
-                              </div>
-                            );
-                          })}
+                          {record.tests &&
+                            record.tests.map((d: any, i: number) => {
+                              return (
+                                <div key={i}>
+                                  <Button style={{ width: "100%" }}>
+                                    {d.testID}: {d.name}
+                                  </Button>
+                                </div>
+                              );
+                            })}
                         </Link>
+                        
+                          <Form onFinish={GeneralStore.postTest} form={form}>
+                            <label htmlFor="subjectID">Konu</label>
+                            <Form.Item name="subjectID">
+                              <Input />
+                            </Form.Item>
+                            {updatedDataTest.map((d, i) => {
+                              return (
+                                <div key={i}>
+                                  <label htmlFor={d.key}>{d.label}:</label>
+                                  <Form.Item name={d.key}>
+                                    <Input />
+                                  </Form.Item>
+                                </div>
+                              );
+                            })}
+                            <label htmlFor="forIsClosedQuestions">
+                              Kapalımı?
+                            </label>
+                            <Form.Item name="forIsClosedQuestions">
+                              <Select>
+                                <Option value="true">Kapalı</Option>
+                                <Option value="false">Açık</Option>
+                              </Select>
+                            </Form.Item>
+                            <Form.Item name="pictureURL">
+                              <Input
+                                onChange={(e: any) =>
+                                  runInAction(
+                                    () =>
+                                      (GeneralStore.image = e.target.files[0])
+                                  )
+                                }
+                                type="file"
+                              />
+                            </Form.Item>
+
+                            <Form.Item>
+                              <Button htmlType="submit" type="primary">
+                                Gonder
+                              </Button>
+                            </Form.Item>
+                          </Form>
+                       
                       </div>
                     </Col>
                   </Row>

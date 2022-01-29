@@ -8,7 +8,7 @@ import UpdateNote from "./UpdateNote";
 import CreateNote from "./CreateNote";
 const Note = () => {
   useEffect(() => {
-    GeneralStore.getKonu()
+    GeneralStore.getKonu();
     GeneralStore.getNotlar();
   }, []);
   return (
@@ -26,8 +26,7 @@ const Note = () => {
         </Button>
       </div>
       {GeneralStore.notlar && GeneralStore.notlar.length > 0 && (
-        
-        <Table 
+        <Table
           dataSource={GeneralStore.notlar}
           rowKey={(d) => d.noteID}
           columns={[
@@ -37,32 +36,31 @@ const Note = () => {
             { title: "KonuID", dataIndex: "subjectID" },
             {
               title: "Şekilli",
-              render: (d) => <div>{d.hasPicture?"Şekilli":"Şekilsiz"}</div>,
+              render: (d) => <div>{d.hasPicture ? "Şekilli" : "Şekilsiz"}</div>,
             },
             {
               title: "Silindi",
-              render: (d) => <div>{d.deleted?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.deleted ? "Aktiv" : "Deaktiv"}</div>,
             },
             {
               title: "Statüs",
-              render: (d) => <div>{d.status?"Aktiv":"Deaktiv"}</div>,
+              render: (d) => <div>{d.status ? "Aktiv" : "Deaktiv"}</div>,
             },
-     
+
             {
               title: "Güncelle",
               render: (d) => (
                 <div>
-                  <Button onClick={()=>{
-                      runInAction(()=>
-                      {
-                          GeneralStore.not=d
-                          GeneralStore.note_update=!GeneralStore.note_update
-                        
-                        }
-                      )
-               console.log(toJS(d))
-                 
-                 }} style={{ backgroundColor: "green", color: "#fff" }}>
+                  <Button
+                    onClick={() => {
+                      runInAction(() => {
+                        GeneralStore.not = d;
+                        GeneralStore.note_update = !GeneralStore.note_update;
+                      });
+                      console.log(toJS(d));
+                    }}
+                    style={{ backgroundColor: "green", color: "#fff" }}
+                  >
                     Güncelle
                   </Button>
                 </div>
@@ -74,9 +72,11 @@ const Note = () => {
                 <div>
                   <Popconfirm
                     title="Silmek istediğinizden emin misiniz?"
-                    onConfirm={async()=>{
-                        await axios.delete(`http://37.148.211.32:8080/api/notes/delete?noteID=${d.noteID}`)
-                        GeneralStore.getNotlar()
+                    onConfirm={async () => {
+                      await axios.delete(
+                        `http://37.148.211.32:8080/api/notes/delete?noteID=${d.noteID}`
+                      );
+                      GeneralStore.getNotlar();
                     }}
                   >
                     <Button style={{ backgroundColor: "red", color: "#fff" }}>
@@ -93,10 +93,10 @@ const Note = () => {
                 <div className="super_content" key={record.id}>
                   <Row>
                     <Col xs={12}>
-                    {record?.pictures&&record?.pictures.map((d:any)=>{
-                        return <Image key={d?.pictureID} src={d?.url} />
-                    })}    
-
+                      {record?.pictures &&
+                        record?.pictures.map((d: any) => {
+                          return <Image key={d?.pictureID} src={d?.url} />;
+                        })}
                     </Col>
                   </Row>
                 </div>
@@ -106,8 +106,8 @@ const Note = () => {
           }}
         />
       )}
-      <UpdateNote/>
-      <CreateNote/>
+      <UpdateNote />
+      <CreateNote />
     </div>
   );
 };

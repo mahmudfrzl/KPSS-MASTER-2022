@@ -1,5 +1,7 @@
 import { withRouter } from 'react-router-dom';    
 import SideMenu from '../components/sideMenu/SideMenu';
+import Navbar from './Navbar';
+
 const ComponentToHide = (props:any) => {
   const { location } = props;
   if (location.pathname.match(/log-in/)){
@@ -9,7 +11,10 @@ const ComponentToHide = (props:any) => {
   }
 
   return (
+    <div>
+    <Navbar/>
     <SideMenu/>
+    </div>
   )
 }
 

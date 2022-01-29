@@ -9,6 +9,7 @@ import PushNotification from "../Content/Notification/PushNotification";
 import Note from "../Content/Notlar/Note";
 import Sorular from "../Content/Soru/Sorular";
 import Testler from "../Content/Testler/Testler";
+
 import AdminSignup from "./AdminSignup";
 import SideMenu from "./SideMenu";
 import UserLogin from "./UserLogin";
@@ -20,7 +21,8 @@ const Router = () => {
          <Redirect to='/sign-up'  />
        </Route>
 
-      <Route  exact path="/sorular" component={Sorular} />
+
+      <Route exact path="/sorular" component={Sorular} />
       <Route exact path="/dersler" component={Dersler} />
       <Route exact path="/konular" component={Subjects} />
       <Route exact path="/testler" component={Testler} />

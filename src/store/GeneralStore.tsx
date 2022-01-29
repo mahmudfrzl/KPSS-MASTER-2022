@@ -39,17 +39,15 @@ class GeneralStore {
   image: any = {};
   img_id: number = 0;
 
+  image_note: any = {};
+
   image_question: any = {};
   img_question_id: number = 0;
 
   description: any = {};
 
-   
-
   constructor() {
     makeAutoObservable(this);
-
-    
   }
 
   getDersler = async () => {
@@ -72,7 +70,7 @@ class GeneralStore {
       this.ders_create = false;
       this.image = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
   //http://localhost:8080/api/lessons/update?deleted=false&description=xcbvxcvb&lessonID=1&name=sdfzsdf&status=true
   updateDers = async (values: any) => {
@@ -93,7 +91,7 @@ class GeneralStore {
       this.ders_update = false;
       this.image = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
 
   getKonu = async () => {
@@ -130,7 +128,7 @@ class GeneralStore {
       this.konu_create = false;
       this.image = {};
     });
-    message.success(data?.data?.message);
+    data.data.success === true ? message.success("Yeni konu başarıyla kayd edildi") :  message.error(data.data.message) 
   };
 
   updateKonu = async (values: any) => {
@@ -150,8 +148,8 @@ class GeneralStore {
     runInAction(() => {
       this.konu_update = false;
       this.image = {};
-    });
-    message.success(data?.data?.message);
+    });     
+     data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
 
   getTestler = async () => {
@@ -180,7 +178,7 @@ class GeneralStore {
       this.test_create = false;
       this.image = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
   // http://localhost:8080/api/test/update?deleted=true&forIsClosedQuestions=true&name=sdgfsfd&status=true&subjectID=1&testID=1
   updateTest = async (values: any) => {
@@ -199,7 +197,7 @@ class GeneralStore {
       this.test_update = false;
       this.image = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
 
   getNotlar = async () => {
@@ -217,7 +215,7 @@ class GeneralStore {
   //http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=8
   postNote = async (values: any) => {
     const fd = new FormData();
-    fd.append("pictureURL", this.image);
+    fd.append("pictureURL", this.image_note);
     const data: any = await axios.post(`${url_dersler}/notes/create`, values);
     await axios.post(
       `http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,
@@ -226,9 +224,9 @@ class GeneralStore {
     this.getNotlar();
     runInAction(() => {
       this.create_note = false;
-      this.image = {};
+      this.image_note = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
 
   updateNot = async (values: any) => {
@@ -237,7 +235,7 @@ class GeneralStore {
       values
     );
     const fd = new FormData();
-    fd.append("pictureURL", this.image);
+    fd.append("pictureURL", this.image_note);
     this.img_id !== 0 &&
       (await axios.put(
         `http://37.148.211.32:8080/api/pictures/update-photo-note?noteID=${this.not.noteID}&pictureID=${this.img_id}`,
@@ -247,9 +245,9 @@ class GeneralStore {
     runInAction(() => {
       this.note_update = false;
       this.img_id = 0;
-      this.image = {};
+      this.image_note = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
 
   getSorular = async () => {
@@ -267,15 +265,12 @@ class GeneralStore {
   //http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=1
   postSorular = async (values: any) => {
     console.log(values.description);
-    
+
     const fd = new FormData();
     fd.append("pictureURL", this.image_question);
-    values.description = this.description
-  
-  
+    values.description = this.description;
+
     console.log(values.description);
-    
-    
 
     const data: any = await axios.post(
       `${url_dersler}/questions/create`,
@@ -291,7 +286,7 @@ class GeneralStore {
       this.image_question = {};
       this.image = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
   //http://37.148.211.32:8080/api/pictures/update-photo-question?pictureID=1&questionID=1
   updateSorular = async (values: any) => {
@@ -303,7 +298,7 @@ class GeneralStore {
     fd.append("pictureURL", this.image_question);
     this.img_question_id !== 0 &&
       (await axios.put(
-        //?noteID=${this.not.noteID}&pictureID=${this.img_id}`,
+        //?noteID=${this.not.noteID}&pictureID=${this.img_id},
         `http://37.148.211.32:8080/api/pictures/update-photo-question?pictureID=${this.img_question_id}&questionID=${this.soru.questionID}`,
         fd
       ));
@@ -314,7 +309,7 @@ class GeneralStore {
       this.image = {};
       this.image_question = {};
     });
-    message.success(data.data.message);
+    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
 
   getCevaplar = async () => {
@@ -332,27 +327,27 @@ class GeneralStore {
   //http://localhost:8080/api/answers/create-with-close-question
   //http://localhost:8080/api/answers/create-with-open-question
   postCevap = async (values: any) => {
-    // if(values.questionID.isClosed ===true){
+    // console.log(values.isClosed.toString());
+    
+      // console.log(d.isClosed.toString());
+  
+        const data = await axios.post(
+          url_dersler + "/answers",
+          values
+        );
+        this.getCevaplar();
+        runInAction(() => {
+          this.cevap_create = false;
+        });
+        data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
 
-    const data = await axios.post(
-      url_dersler + "/answers/create-with-close-question",
-      values
-    );
-    this.getCevaplar();
-    runInAction(() => {
-      this.cevap_create = false;
-    });
-    message.success(data.data.message);
-    // }
-    // else{
-    //     const data = await axios.post(url_dersler + "/answers/create-with-open-question", values);
-    //     this.getCevaplar();
-    //     runInAction(() => {
-    //       this.cevap_create = false;
-    //     });
-    //     message.success(data.data.message);
-    // }
+
+
+       
+
   };
+
+  
 
   updateCevaplar = async (values: any) => {
     const data = await axios.put(
