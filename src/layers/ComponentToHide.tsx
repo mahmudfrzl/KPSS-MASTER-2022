@@ -1,21 +1,22 @@
-import { withRouter } from 'react-router-dom';    
-import SideMenu from '../components/sideMenu/SideMenu';
-import Navbar from './Navbar';
+import { Content, Footer, Header } from "antd/lib/layout/layout";
+import { withRouter } from "react-router-dom";
+import SideMenu from "../components/sideMenu/SideMenu";
+import Navbar from "./Navbar";
 
-const ComponentToHide = (props:any) => {
+const ComponentToHide = (props: any) => {
   const { location } = props;
-  if (location.pathname.match(/log-in/)){
+  if (location.pathname.match(/log-in/)) {
     return null;
-  }else if (location.pathname.match(/sign-up/)){
-      return null;
+  } else if (location.pathname.match(/sign-up/)) {
+    return null;
   }
 
   return (
     <div>
-    <Navbar/>
-    <SideMenu/>
+        <Navbar />
+        <SideMenu />
     </div>
-  )
-}
+  );
+};
 
 export const ComponentThatHides = withRouter(ComponentToHide);

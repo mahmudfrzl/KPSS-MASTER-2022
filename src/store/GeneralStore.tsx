@@ -2,7 +2,6 @@ import { makeAutoObservable, runInAction, toJS } from "mobx";
 import axios from "axios";
 import { Form, message } from "antd";
 import { runInContext } from "vm";
-
 let url_dersler = "http://37.148.211.32:8080/api";
 
 class GeneralStore {
@@ -265,11 +264,10 @@ class GeneralStore {
   //http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=1
   postSorular = async (values: any) => {
     console.log(values.description);
-
     const fd = new FormData();
     fd.append("pictureURL", this.image_question);
     values.description = this.description;
-
+    
     console.log(values.description);
 
     const data: any = await axios.post(

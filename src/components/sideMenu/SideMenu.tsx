@@ -87,7 +87,7 @@ const SideMenu = () => {
               </div>
 
               <Menu
-                style={{ width: "100%" }}
+                style={{ width: "100%" , height: "80%" }}
                 defaultSelectedKeys={["1"]}
                 defaultOpenKeys={["sub1"]}
                 mode="inline"

@@ -6,6 +6,7 @@ import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ReactHtmlParser from 'react-html-parser';
 const { Option } = Select;
 
 const PostSorular = () => {
@@ -59,12 +60,15 @@ const PostSorular = () => {
                     editor={ClassicEditor}
 
                     onChange={(event, editor) => {
-                      
                       const data = editor.getData();
-                      // const setData = <div contentEditable='true' setInnerHTML={{_html:data}}></div>;
+                      // const setData = <div dangerouslySetInnerHTML={{__html:data}}></div>;
+                      // <div dangerouslySetInnerHTML={{ __html: data }} />
+                      console.log(ReactHtmlParser("<div>HTML strings</div>"));
+                      console.log(ReactHtmlParser(data));
                       console.log(data);
                       console.log(editor);
-                      runInAction(() => (GeneralStore.description =data ));
+                      return runInAction(() => (GeneralStore.description =data ));
+                      
                       
                     }}
                     // onChange={(event, editor) => {
