@@ -2,7 +2,7 @@ import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import GeneralStore from "../../../store/GeneralStore";
-import { Table, Image,  Row, Col, Popconfirm } from "antd";
+import { Table, Image, Row, Col, Popconfirm } from "antd";
 import axios from "axios";
 import UpdateTest from "./UpdateTest";
 import CreateTest from "./CreateTest";
@@ -19,7 +19,7 @@ const Testler = () => {
   useEffect(() => {
     GeneralStore.getKonu();
     GeneralStore.getTestler();
-  },  [GeneralStore.create_soru]);
+  }, [GeneralStore.create_soru]);
 
   return (
     <div>
@@ -102,6 +102,7 @@ const Testler = () => {
           ]}
           expandable={{
             expandedRowRender: (record) => {
+              form.setFieldsValue({ testID: record.testID }); 
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
@@ -111,28 +112,11 @@ const Testler = () => {
 
                     <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
-                        <Link
-                          to={(location) => ({
-                            ...location,
-                            pathname: "/sorular",
-                          })}
-                        >
-                          <h2>Sorular</h2>
-                          {record.questions &&
-                            record.questions.map((d, i) => {
-                              return (
-                                <div key={i}>
-                                  <Button style={{ width: "100%" }}>
-                                    {d.questionID}: {d.description}
-                                  </Button>
-                                </div>
-                              );
-                            })}
-                        </Link>
+                        <h2>Sorular</h2>
                         <Form onFinish={GeneralStore.postSorular} form={form}>
                           <label htmlFor="testID">Test</label>
                           <Form.Item name="testID">
-                            <Input/>
+                            <Input />
                           </Form.Item>
                           {updatedData.map((d, i) => {
                             return (
@@ -170,11 +154,14 @@ const Testler = () => {
                           <Form.Item name="pictureURL">
                             <Input
                               onChange={(e) =>
-                                
                                 runInAction(
-                                  () =>
-                                    (GeneralStore.image_question = e.target.files[GeneralStore.img_question_id],GeneralStore.img_question_id++)
-                                    
+                                  () => (
+                                    (GeneralStore.image_question =
+                                      e.target.files[
+                                        GeneralStore.img_question_id
+                                      ]),
+                                    GeneralStore.img_question_id++
+                                  )
                                 )
                               }
                               type="file"
@@ -189,7 +176,35 @@ const Testler = () => {
                               Gonder
                             </Button>
                           </Form.Item>
-                        </Form> 
+                        </Form>
+                        {record.questions &&
+                          record.questions.map((d, i) => {
+                            return (
+                              <div key={i}>
+                                <Link
+                                  to={(location) => ({
+                                    ...location,
+                                    pathname: "/sorular",
+                                  })}
+                                >
+                                  <Button
+                                    style={{
+                                      width: "100%",
+                                      height: "auto",
+                                      whiteSpace: "normal",
+                                    }}
+                                  >
+                                    <div
+                                      suppressContentEditableWarning={true}
+                                      dangerouslySetInnerHTML={{
+                                        __html: d.questionID + d.description,
+                                      }}
+                                    ></div>
+                                  </Button>
+                                </Link>
+                              </div>
+                            );
+                          })}
                       </div>
                     </Col>
                   </Row>

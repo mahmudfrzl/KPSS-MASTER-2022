@@ -4,6 +4,8 @@ import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 const { Option } = Select;
 
 const PostCevaplar = () => {
@@ -52,7 +54,17 @@ const PostCevaplar = () => {
               <div key={i}>
                 <label htmlFor={d.key}>{d.label}:</label>
                 <Form.Item name={d.key}>
-                  <Input />
+              
+                  <CKEditor
+                    editor={ClassicEditor}
+
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      console.log(data);
+                      return runInAction(() => (GeneralStore.answerSection =data ));
+                    }} 
+
+                  />
                 </Form.Item>
               </div>
             );
@@ -63,7 +75,7 @@ const PostCevaplar = () => {
               <Option value="true">Doğru</Option>
               <Option value="false">Yanlış</Option>
             </Select>
-          </Form.Item>
+          </Form.Item> 
           <label htmlFor="isClosed">Kapalımı</label>
           <Form.Item name="isClosed">
             <Select>

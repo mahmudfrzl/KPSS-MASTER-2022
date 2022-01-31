@@ -32,7 +32,16 @@ const Note = () => {
           columns={[
             { title: "ID", dataIndex: "noteID" },
 
-            { title: "Not", dataIndex: "noteDescription" },
+            {
+              title: "Not",
+              render: (d) => (
+                <div
+                  style={{ width: 400 }}
+                  suppressContentEditableWarning={true}
+                  dangerouslySetInnerHTML={{ __html: d.noteDescription }}
+                ></div>
+              ),
+            },
             { title: "KonuID", dataIndex: "subjectID" },
             {
               title: "Şekilli",

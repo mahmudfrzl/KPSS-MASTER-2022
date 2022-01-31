@@ -33,9 +33,24 @@ const Cevaplar = () => {
           columns={[
             { title: "ID", dataIndex: "answerID" },
 
-            { title: "Cevap", dataIndex: "answerSection" },
+            { title: "Cevap",
+            render: (d) => (
+              <div style={{width:200}}
+                suppressContentEditableWarning={true}
+                dangerouslySetInnerHTML={{ __html: d.answerSection }}
+              ></div>
+            ),
+            },
             { title: "SoruID", dataIndex: "questionID" },
-            { title: "Soru Başlığı", dataIndex: "questionDescription" },
+            // {
+            //   title: "Soru Başlığı",
+            //   render: (d) => (
+            //     <div style={{width:100}}
+            //       suppressContentEditableWarning={true}
+            //       dangerouslySetInnerHTML={{ __html: d.questionDescription }}
+            //     ></div>
+            //   ),
+            // },
             {
               title: "Kapalımı",
               render: (d) => <div>{d.isClosed?"Kapalı":`Açık`}</div>,

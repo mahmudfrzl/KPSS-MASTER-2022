@@ -12,7 +12,7 @@ const CreateDers = () => {
     { key: "description", label: "Hakkinda" },
     { key: "name", label: "İsim" },
   ];
-                         //form UserForm istifade ele fieldsValue set zad
+
   useEffect(() => {
     form.setFieldsValue({
       lessonID: "",

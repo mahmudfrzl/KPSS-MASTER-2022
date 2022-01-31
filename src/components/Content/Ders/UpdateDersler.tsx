@@ -26,6 +26,7 @@ const UpdateDersler = () => {
 
     
   }, [GeneralStore.ders_update]);
+  
   return (
     <div> 
       <Drawer

@@ -44,6 +44,8 @@ class GeneralStore {
   img_question_id: number = 0;
 
   description: any = {};
+  answerSection:any = {};
+  noteDescription:any = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -112,8 +114,9 @@ class GeneralStore {
     }
   };
 
-  postKonu = async (values: any) => {
+  postKonu = async (values?: any,form?:any) => {
     const fd = new FormData();
+    let image;
     console.log(this.image);
 
     fd.append("pictureURL", this.image);
@@ -128,6 +131,7 @@ class GeneralStore {
       this.image = {};
     });
     data.data.success === true ? message.success("Yeni konu başarıyla kayd edildi") :  message.error(data.data.message) 
+    form.setFieldsValue({pictureURL:"", name: "",isPremium:""})
   };
 
   updateKonu = async (values: any) => {
@@ -176,6 +180,7 @@ class GeneralStore {
     runInAction(() => {
       this.test_create = false;
       this.image = {};
+
     });
     data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
   };
@@ -215,6 +220,7 @@ class GeneralStore {
   postNote = async (values: any) => {
     const fd = new FormData();
     fd.append("pictureURL", this.image_note);
+    values.noteDescription = this.noteDescription
     const data: any = await axios.post(`${url_dersler}/notes/create`, values);
     await axios.post(
       `http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,
@@ -328,6 +334,7 @@ class GeneralStore {
     // console.log(values.isClosed.toString());
     
       // console.log(d.isClosed.toString());
+      values.answerSection = this.answerSection
   
         const data = await axios.post(
           url_dersler + "/answers",

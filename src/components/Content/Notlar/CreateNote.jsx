@@ -4,6 +4,8 @@ import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 const { Option } = Select;
 
 const CreateNote = () => {
@@ -50,21 +52,30 @@ const CreateNote = () => {
               <div key={i}>
                 <label htmlFor={d.key}>{d.label}:</label>
                 <Form.Item name={d.key}>
-                  <Input />
+              
+                  <CKEditor
+                    editor={ClassicEditor}
+
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      return runInAction(() => (GeneralStore.noteDescription =data ));
+                    }} 
+
+                  />
                 </Form.Item>
               </div>
             );
           })}
-          <label htmlFor="hasPicture">Şekillimi?</label>
+          <label htmlFor="hasPicture">Resimlimi?</label>
           <Form.Item name="hasPicture">
             <Select>
-              <Option value="true">Şekilli</Option>
-              <Option value="false">Şekil</Option>
+              <Option value="true">Resimli</Option>
+              <Option value="false">Resimsiz</Option>
             </Select>
           </Form.Item>
           <label htmlFor="image">Resim yukle:</label>
             <Form.Item name='pictureURL'>
-              <Input onChange={(e:any)=>runInAction(()=>GeneralStore.image_note=e.target.files[0])} type='file' />
+              <Input onChange={(e)=>runInAction(()=>GeneralStore.image_note=e.target.files[0])} type='file' />
             </Form.Item>
           <Form.Item>
             <Button htmlType="submit" type="primary">

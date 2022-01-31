@@ -20,13 +20,13 @@ const Subjects = () => {
     GeneralStore.getDersler();
     GeneralStore.getKonu();
     form.setFieldsValue({
-      subjectID: GeneralStore.test.subjectID,
+      subjectID: GeneralStore.konu.subjectID,
+      status: "", 
+      deleted: "",
+      name:"",
 
-      deleted: GeneralStore.test.deleted,
-      name: GeneralStore.test.name,
-      testID: GeneralStore.test.testID,
     });
-  }, []);
+  }, [GeneralStore.test_create]);
 
   return (
     <div>
@@ -105,6 +105,7 @@ const Subjects = () => {
           ]}
           expandable={{
             expandedRowRender: (record) => {
+              form.setFieldsValue({subjectID:record.subjectID})
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
@@ -134,27 +135,9 @@ const Subjects = () => {
                       </div>
                     </Col>
                     <Col xs={12}>
+                    <h2>Testler</h2>
                       <div style={{ paddingLeft: "5px" }}>
-                        <Link
-                          to={(location) => ({
-                            ...location,
-                            pathname: "/testler",
-                          })}
-                        >
-                          <h2>Testler</h2>
-                          {record.tests &&
-                            record.tests.map((d: any, i: number) => {
-                              return (
-                                <div key={i}>
-                                  <Button style={{ width: "100%" }}>
-                                    {d.testID}: {d.name}
-                                  </Button>
-                                </div>
-                              );
-                            })}
-                        </Link>
-                        
-                          <Form onFinish={GeneralStore.postTest} form={form}>
+                      <Form onFinish={GeneralStore.postTest} form={form}>
                             <label htmlFor="subjectID">Konu</label>
                             <Form.Item name="subjectID">
                               <Input />
@@ -178,6 +161,9 @@ const Subjects = () => {
                                 <Option value="false">Açık</Option>
                               </Select>
                             </Form.Item>
+                            <label htmlFor="pictureURL">
+                              Resim
+                            </label>
                             <Form.Item name="pictureURL">
                               <Input
                                 onChange={(e: any) =>
@@ -196,7 +182,28 @@ const Subjects = () => {
                               </Button>
                             </Form.Item>
                           </Form>
+                        <Link
+                          to={(location) => ({
+                            ...location,
+                            pathname: "/testler",
+                          })}
+                        >
+                  
+                          
                        
+                          {record.tests &&
+                            record.tests.map((d: any, i: number) => {
+                              return (
+                                <div key={i}>
+                                  <Button style={{ width: "100%" }}>
+                                    {d.testID}: {d.name}
+                                  </Button>
+                                </div>
+                              );
+                            })}
+                        </Link>
+                        
+                          
                       </div>
                     </Col>
                   </Row>

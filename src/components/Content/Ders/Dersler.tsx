@@ -13,17 +13,21 @@ import { useForm } from "antd/lib/form/Form";
 import CreateKonu from "../Konular/CreateKonu";
 const Dersler = () => {
   const [form] = useForm();
-  const updatedData = [{ key: "name", label: "İsim" }];
+  const updatedData = [
+    { key: "lessonID", label: "DersID" },
+    { key: "name", label: "İsim" },
+  ];
   useEffect(() => {
     GeneralStore.getDersler();
     form.setFieldsValue({
       deleted: "",
-      lessonID: "",
+      lessonID: GeneralStore.ders.lessonID,
       name: "",
       status: "",
       isPremium: "",
     });
   }, [GeneralStore.konu_create]);
+  console.log(toJS(GeneralStore.image));
   return (
     <div>
       <h1>Dersler</h1>
@@ -98,6 +102,7 @@ const Dersler = () => {
           ]}
           expandable={{
             expandedRowRender: (record) => {
+              form.setFieldsValue({ lessonID: record.lessonID }); 
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
@@ -107,30 +112,14 @@ const Dersler = () => {
                     <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
                         <h2>Konular</h2>
-                        {record.subjects &&
-                          record.subjects.map((d: any) => {
-                            return (
-                              <div key={d.subjectID}>
-                                <Link
-                                  to={(location) => ({
-                                    ...location,
-                                    pathname: "/konular",
-                                  })}
-                                >
-                                  {" "}
-                                  <Button style={{ width: "100%" }}>
-                                    {d.subjectID}: {d.name}
-                                  </Button>{" "}
-                                </Link>
-                              </div>
-                            );
-                          })}
-                          
-                        <Form onFinish={GeneralStore.postKonu} form={form}>
-                          <label htmlFor="lessonID">Ders ID</label>
+                        <Form
+                          onFinish={(e) => GeneralStore.postKonu(e, form)}
+                          form={form}
+                        >
+                          {/* <label htmlFor="lessonID">Ders ID</label>
                           <Form.Item name="lessonID">
                             <Input />
-                          </Form.Item>
+                          </Form.Item> */}
                           {updatedData.map((d, i) => {
                             return (
                               <div key={i}>
@@ -153,13 +142,11 @@ const Dersler = () => {
                             <Input
                               onChange={(e: any) =>
                                 runInAction(
-                                  () =>
-                                    (GeneralStore.image =
-                                      e.target.files[0] &&
-                                      console.log(e.target.files))
+                                  () => (GeneralStore.image = e.target.files[0])
                                 )
                               }
                               type="file"
+                              name="file"
                             />
                           </Form.Item>
 
@@ -169,7 +156,24 @@ const Dersler = () => {
                             </Button>
                           </Form.Item>
                         </Form>
-                      
+                        {record.subjects &&
+                          record.subjects.map((d: any) => {
+                            return (
+                              <div key={d.subjectID}>
+                                <Link
+                                  to={(location) => ({
+                                    ...location,
+                                    pathname: "/konular",
+                                  })}
+                                >
+                                  {" "}
+                                  <Button style={{ width: "100%" }}>
+                                    {d.subjectID}: {d.name}
+                                  </Button>{" "}
+                                </Link>
+                              </div>
+                            );
+                          })}
                       </div>
                     </Col>
                   </Row>

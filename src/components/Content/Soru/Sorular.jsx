@@ -11,17 +11,18 @@ import { Drawer, Form, Input, Select } from "antd";
 import { Option } from "antd/lib/mentions";
 import { useForm } from "antd/lib/form/Form";
 import PostCevap from "../Cevaplar/PostCevap";
-
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 const Sorular = () => {
   const [form] = useForm();
   const updatedData = [{ key: "answerSection", label: "Cevap" }];
 
   useEffect(() => {
     form.setFieldsValue({
-      correctNess: GeneralStore.cevap.correctNess,
-      answerSection: GeneralStore.cevap.answerSection,
+      correctNess: "",
+      answerSection: "",
       questionID: GeneralStore.cevap.questionID,
-      isClosed: GeneralStore.cevap.isClosed,
+      isClosed: "",
     });
     GeneralStore.getTestler();
     GeneralStore.getSorular();
@@ -49,7 +50,16 @@ const Sorular = () => {
           columns={[
             { title: "ID", dataIndex: "questionID" },
             { title: "TestID", dataIndex: "testID" },
-            { title: "Soru Başlığı", dataIndex: "description" },
+            {
+              title: "Soru Başlığı",
+              render: (d) => (
+                <div
+                  style={{ width: 400 }}
+                  suppressContentEditableWarning={true}
+                  dangerouslySetInnerHTML={{ __html: d.description }}
+                ></div>
+              ),
+            },
             {
               title: "Kapalı",
               render: (d) => <div>{d.isClosed ? "Kapalı" : "Açık"}</div>,
@@ -105,36 +115,19 @@ const Sorular = () => {
           ]}
           expandable={{
             expandedRowRender: (record) => {
+              form.setFieldsValue({ questionID: record.questionID }); 
               return (
                 <div className="super_content" key={record.id}>
                   <Row>
                     <Col xs={8}>
                       {record?.pictures &&
-                        record?.pictures.map((d: any) => {
+                        record?.pictures.map((d) => {
                           return <Image key={d?.pictureID} src={d?.url} />;
                         })}
                     </Col>
                     <Col xs={16}>
                       <div style={{ paddingLeft: "5px" }}>
                         <h2>Cevaplar</h2>
-                        {record.answers &&
-                          record.answers.map((d: any, i: number) => {
-                            return (
-                              <div key={i}>
-                                <Link
-                                  to={(location) => ({
-                                    ...location,
-                                    pathname: "/cevaplar",
-                                  })}
-                                >
-                                  <Button style={{ width: "100%" }}>
-                                    {d.answerID}: {d.answerSection} -{" "}
-                                    {d.correctNess === true ? "true" : "false"}
-                                  </Button>
-                                </Link>
-                              </div>
-                            );
-                          })}
                         {record.answers && record.answers.length >= 5 ? (
                           ""
                         ) : (
@@ -150,7 +143,17 @@ const Sorular = () => {
                                 <div key={i}>
                                   <label htmlFor={d.key}>{d.label}:</label>
                                   <Form.Item name={d.key}>
-                                    <Input />
+                                    <CKEditor
+                                      editor={ClassicEditor}
+                                      onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        console.log(data);
+                                        return runInAction(
+                                          () =>
+                                            (GeneralStore.answerSection = data)
+                                        );
+                                      }}
+                                    />
                                   </Form.Item>
                                 </div>
                               );
@@ -176,6 +179,43 @@ const Sorular = () => {
                             </Form.Item>
                           </Form>
                         )}
+                        {record.answers &&
+                          record.answers.map((d, i) => {
+                            return (
+                              <div key={i}>
+                                <Link
+                                  to={(location) => ({
+                                    ...location,
+                                    pathname: "/cevaplar",
+                                  })}
+                                >
+                                  <Button
+                                    style={{
+                                      width: "100%",
+                                      height: "auto",
+                                      whiteSpace: "normal",
+                                    }}
+                                  >
+                                    <div
+                                      suppressContentEditableWarning={true}
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          d.answerID +
+                                          ":" +
+                                          d.answerSection +
+                                          ":" +
+                                          (d.correctNess === true
+                                            ? "Doğru"
+                                            : "Yanlış"),
+                                      }}
+                                    ></div>
+                                    {/* {d.answerID}: {d.answerSection} -{" "}
+                                    {d.correctNess === true ? "true" : "false"} */}
+                                  </Button>
+                                </Link>
+                              </div>
+                            );
+                          })}
                       </div>
                     </Col>
                   </Row>
@@ -188,7 +228,7 @@ const Sorular = () => {
       )}
       <UpdateQuestion />
       <PostSorular />
-      <PostCevap/>
+      <PostCevap />
     </div>
   );
 };

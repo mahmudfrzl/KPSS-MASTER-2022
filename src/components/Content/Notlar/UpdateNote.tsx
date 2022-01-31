@@ -72,13 +72,7 @@ const UpdateNote = () => {
               <Option value="false">Deaktiv </Option>
             </Select>
           </Form.Item>
-          <label htmlFor="hasPicture">Şekillimi?</label>
-          <Form.Item name="hasPicture">
-            <Select>
-              <Option value="true">Şekilli</Option>
-              <Option value="false">Şekil</Option>
-            </Select>
-          </Form.Item>
+
           
           {GeneralStore.not.hasPicture===true ? ( <Form.Item name="pictureURL">
           {<label htmlFor="">Guncellenecek resim:</label>}  
