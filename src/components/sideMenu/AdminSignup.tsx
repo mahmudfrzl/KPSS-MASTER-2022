@@ -16,13 +16,13 @@ const AdminSignup = () => {
   ];
   const signup = async (event: any) => {
     const data = await axios.post(
-      "http://37.148.211.32:8080/api/admins/sign-up",
+      "http://37.148.211.32:8080/api/admins/log-in",
       event
     );
     message.success(data.data.message);
 
     if (data.data.success === true) {
-      runInAction(() => history.push("/log-in"));
+      runInAction(() => history.push("/dersler"));
     } else {
       message.error(data.data.message);
     }

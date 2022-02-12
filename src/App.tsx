@@ -5,7 +5,6 @@ import { Redirect, Route } from "react-router-dom";
 import AdminSignup from "./components/sideMenu/AdminSignup";
 import Router from "./components/sideMenu/Router";
 import SideMenu from "./components/sideMenu/SideMenu";
-import UserLogin from "./components/sideMenu/UserLogin";
 import { ComponentThatHides } from "./layers/ComponentToHide";
 import Dashboard from "./layers/Dashboard";
 
@@ -16,7 +15,6 @@ const App = () => {
 
     <div>
       
-       <Route exact path="/log-in" component={UserLogin} />
        <Route exact path="/sign-up" component={AdminSignup} />
         <ComponentThatHides/>
     </div>

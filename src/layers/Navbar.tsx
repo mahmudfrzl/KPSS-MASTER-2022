@@ -13,7 +13,7 @@ const Navbar = () => {
   const { SubMenu } = Menu;
   function confirm(e:any) {
     console.log(e);
-    history.push("/log-in");
+    history.push("/");
     message.success('Çıkış yaptınız');
   }
   

@@ -12,7 +12,6 @@ import Testler from "../Content/Testler/Testler";
 
 import AdminSignup from "./AdminSignup";
 import SideMenu from "./SideMenu";
-import UserLogin from "./UserLogin";
 
 const Router = () => {
   return (
