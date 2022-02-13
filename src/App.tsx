@@ -15,7 +15,7 @@ const App = () => {
 
     <div>
       
-       <Route exact path="/sign-up" component={AdminSignup} />
+       <Route exact path="/log-in" component={AdminSignup} />
         <ComponentThatHides/>
     </div>
   );

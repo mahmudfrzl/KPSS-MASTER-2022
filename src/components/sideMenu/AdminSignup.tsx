@@ -11,7 +11,6 @@ const AdminSignup = () => {
   const [admin, setAdmin] = useState({ username: "", email: "", password: "" });
   const [form] = useForm();
   const updatedData = [
-    { key: "username", label: "Username" },
     { key: "email", label: "Email" },
   ];
   const signup = async (event: any) => {
@@ -29,7 +28,6 @@ const AdminSignup = () => {
   };
   useEffect(() => {
     form.setFieldsValue({
-      username: "",
       email: "",
       password:""
     });
@@ -102,7 +100,7 @@ const AdminSignup = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <label htmlFor={d.key}>{d.label}:</label>
+                  <label htmlFor={d.key}>{d.label}</label>
                 </div>
                 <div
                   style={{
@@ -205,19 +203,19 @@ const AdminSignup = () => {
           >
             <div>
               <Form.Item name="remember" valuePropName="checked">
-                <Checkbox>Məni xatırla</Checkbox>
+                <Checkbox>Unutma</Checkbox>
               </Form.Item>
             </div>
 
             <div>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
-                  Daxil ol
+                  Giriş yap
                 </Button>
               </Form.Item>
             </div>
           </div>
-          <div>
+          {/* <div>
             <Form.Item name="login">
               <a
                 className="forgot_pass"
@@ -228,7 +226,7 @@ const AdminSignup = () => {
                 Log in
               </a>
             </Form.Item>
-          </div>
+          </div> */}
         </Form>
       </div>
     </div>

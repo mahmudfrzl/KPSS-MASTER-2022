@@ -17,7 +17,7 @@ const Router = () => {
   return (
     <Switch>
        <Route exact path="/">
-         <Redirect to='/sign-up'  />
+         <Redirect to='/log-in'  />
        </Route>
 
 
