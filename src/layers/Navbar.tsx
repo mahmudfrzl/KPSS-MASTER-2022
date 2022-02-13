@@ -8,12 +8,13 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-const Navbar = () => {
+import Auth from "../components/sideMenu/Auth";
+const Navbar = (props:any) => {
   const history = useHistory();
   const { SubMenu } = Menu;
   function confirm(e:any) {
     console.log(e);
-    history.push("/");
+    history.push("/")
     message.success('Çıkış yaptınız');
   }
   

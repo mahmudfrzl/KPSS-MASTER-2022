@@ -11,24 +11,25 @@ import Sorular from "../Content/Soru/Sorular";
 import Testler from "../Content/Testler/Testler";
 
 import AdminSignup from "./AdminSignup";
+import { ProtectedRoute } from "./ProtectedRoute";
 import SideMenu from "./SideMenu";
 
 const Router = () => {
   return (
     <Switch>
        <Route exact path="/">
-         <Redirect to='/log-in'  />
+         <Redirect to='/log-in'/>
        </Route>
 
 
-      <Route exact path="/sorular" component={Sorular} />
-      <Route exact path="/dersler" component={Dersler} />
-      <Route exact path="/konular" component={Subjects} />
-      <Route exact path="/testler" component={Testler} />
-      <Route exact path="/notlar" component={Note} />
-      <Route exact path="/cevaplar" component={Cevaplar} />
-      <Route exact path="/sosial-linkler" component={ListMedias} />
-      <Route exact path="/bildirimler" component={PushNotification} />
+      <ProtectedRoute exact path="/sorular" component={Sorular} />
+      <ProtectedRoute exact path="/dersler" component={Dersler} />
+      <ProtectedRoute exact path="/konular" component={Subjects} />
+      <ProtectedRoute exact path="/testler" component={Testler} />
+      <ProtectedRoute exact path="/notlar" component={Note} />
+      <ProtectedRoute exact path="/cevaplar" component={Cevaplar} />
+      <ProtectedRoute exact path="/sosial-linkler" component={ListMedias} />
+      <ProtectedRoute exact path="/bildirimler" component={PushNotification} />
       <Route>
         <Empty description="Sayfa bulunamadı" />
       </Route>

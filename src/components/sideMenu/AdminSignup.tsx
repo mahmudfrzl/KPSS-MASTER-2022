@@ -5,14 +5,12 @@ import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import Auth from "./Auth";
 
-const AdminSignup = () => {
+const AdminSignup = (props:any) => {
   const history = useHistory();
-  const [admin, setAdmin] = useState({ username: "", email: "", password: "" });
   const [form] = useForm();
-  const updatedData = [
-    { key: "email", label: "Email" },
-  ];
+  const updatedData = [{ key: "email", label: "Email" }];
   const signup = async (event: any) => {
     const data = await axios.post(
       "http://37.148.211.32:8080/api/admins/log-in",
@@ -21,7 +19,9 @@ const AdminSignup = () => {
     message.success(data.data.message);
 
     if (data.data.success === true) {
-      runInAction(() => history.push("/dersler"));
+      runInAction(() =>Auth.login(() => {
+        props.history.push("/dersler")
+      })  );
     } else {
       message.error(data.data.message);
     }
@@ -29,7 +29,7 @@ const AdminSignup = () => {
   useEffect(() => {
     form.setFieldsValue({
       email: "",
-      password:""
+      password: "",
     });
   }, [signup]);
 
@@ -38,14 +38,6 @@ const AdminSignup = () => {
   //       username: 'Bamboo',
   //     });
   //   }, []);
-
-  const onInputChange = (e: any) => {
-    setAdmin({
-      username: e.target.value,
-      email: e.target.value,
-      password: e.target.value,
-    });
-  };
 
   return (
     <div>
@@ -115,7 +107,7 @@ const AdminSignup = () => {
               </div>
             );
           })}
-                    <div
+          <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -193,7 +185,6 @@ const AdminSignup = () => {
               <Input type="email" style={{ width: 300 }} />
             </Form.Item>
           </div> */}
-
 
           <div
             style={{
