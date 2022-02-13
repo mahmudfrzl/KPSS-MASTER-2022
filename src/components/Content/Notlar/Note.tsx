@@ -36,7 +36,7 @@ const Note = () => {
               title: "Not",
               render: (d) => (
                 <div
-                  style={{ width: 400 }}
+                style={{ width: 300 }}
                   suppressContentEditableWarning={true}
                   dangerouslySetInnerHTML={{ __html: d.noteDescription }}
                 ></div>

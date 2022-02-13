@@ -131,7 +131,7 @@ class GeneralStore {
       this.image = {};
     });
     data.data.success === true ? message.success("Yeni konu başarıyla kayd edildi") :  message.error(data.data.message) 
-    form.setFieldsValue({pictureURL:"", name: "",isPremium:""})
+   // form.setFieldsValue({pictureURL:"", name: "",isPremium:""})
   };
 
   updateKonu = async (values: any) => {
