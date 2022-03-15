@@ -16,9 +16,9 @@ const CreateNote = () => {
 
   useEffect(() => {
     form.setFieldsValue({
-      subjectID: GeneralStore.not.subjectID,
-      noteDescription: GeneralStore.not.noteDescription,
-      hasPicture:GeneralStore.not.hasPicture
+      subjectID: "",
+      noteDescription: "",
+      hasPicture:""
     });
   }, [GeneralStore.create_note]);
   return (

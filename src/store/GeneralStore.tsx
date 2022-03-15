@@ -114,6 +114,25 @@ class GeneralStore {
     }
   };
 
+  // getKonuID = async (id:any) => {
+  //   try {
+  //     const data = await axios.get(`${url_dersler}/subjects/findBySubjectID?subjectID=${id}`);
+  //     console.log("xxxx", toJS(data));
+  //     console.log("bbbb", toJS(data.data));
+  //     console.log("ccc", toJS(data.data.data));
+  //     runInAction(() => {
+  //       this.konular = data.data.data;
+  //     });
+  //   } catch (err: any) {
+  //     console.log(err);
+  //     if (err) {
+  //       runInAction(() => {
+  //         this.konular = [];
+  //       });
+  //     }
+  //   }
+  // };
+
   postKonu = async (values?: any,form?:any) => {
     const fd = new FormData();
     let image;
@@ -221,9 +240,9 @@ class GeneralStore {
     const fd = new FormData();
     fd.append("pictureURL", this.image_note);
     values.noteDescription = this.noteDescription
-    const data: any = await axios.post(`${url_dersler}/notes/create`, values);
+    const data: any = await axios.post(`http://localhost:8080/api/notes/create`, values);
     await axios.post(
-      `http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,
+      `http://localhost:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,
       fd
     );
     this.getNotlar();
@@ -235,6 +254,7 @@ class GeneralStore {
   };
 
   updateNot = async (values: any) => {
+    values.noteDescription = this.noteDescription
     const data: any = await axios.put(
       `${url_dersler}/notes/update?noteID=${this.not.noteID}`,
       values
@@ -294,6 +314,9 @@ class GeneralStore {
   };
   //http://37.148.211.32:8080/api/pictures/update-photo-question?pictureID=1&questionID=1
   updateSorular = async (values: any) => {
+    values.description = this.description;
+    
+    console.log(values.description);
     const data: any = await axios.put(
       `${url_dersler}/questions/update?questionID=${this.soru.questionID}`,
       values

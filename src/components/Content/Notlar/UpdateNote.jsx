@@ -5,6 +5,8 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
 import axios from "axios";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 const { Option } = Select;
 const UpdateNote = () => {
   const [form] = useForm();
@@ -52,7 +54,16 @@ const UpdateNote = () => {
               <div key={i}>
                 <label htmlFor={d.key}>{d.label}:</label>
                 <Form.Item name={d.key}>
-                  <Input />
+              
+                  <CKEditor
+                    editor={ClassicEditor}
+
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      return runInAction(() => (GeneralStore.noteDescription =data ));
+                    }} 
+
+                  />
                 </Form.Item>
               </div>
             );
@@ -80,7 +91,7 @@ const UpdateNote = () => {
               {
                 GeneralStore.not.pictures &&  GeneralStore.not.pictures.length>0 ?(
 
-                GeneralStore.not.pictures.map((a: any) => {
+                GeneralStore.not.pictures.map((a) => {
                   return (
                     <Select.Option value={a.pictureID}>
                       <div
@@ -93,7 +104,7 @@ const UpdateNote = () => {
                           src={a.url}
                           /> <br />
                         <Input
-                          onChange={(e: any) =>{
+                          onChange={(e) =>{
 
                             runInAction(
                               () => (GeneralStore.image_note = e.target.files[0])
@@ -111,7 +122,7 @@ const UpdateNote = () => {
                   <div>
                   <label htmlFor="image_note">Resim guncelle:</label>
                   <Input
-                    onChange  ={async(e: any) => {
+                    onChange  ={async(e) => {
                       //http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=1
                       const url=`http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${GeneralStore.not.noteID}`
                       const fd=new FormData();
