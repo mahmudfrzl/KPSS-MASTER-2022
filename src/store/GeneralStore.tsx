@@ -40,12 +40,12 @@ class GeneralStore {
 
   image_note: any = {};
 
-  image_question: any = {};
+  image_question: any = "";
   img_question_id: number = 0;
 
-  description: any = {};
-  answerSection:any = {};
-  noteDescription:any = {};
+  description: any = "";
+  answerSection:any = "";
+  noteDescription:any = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -240,11 +240,13 @@ class GeneralStore {
     const fd = new FormData();
     fd.append("pictureURL", this.image_note);
     values.noteDescription = this.noteDescription
-    const data: any = await axios.post(`http://localhost:8080/api/notes/create`, values);
-    await axios.post(
-      `http://localhost:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,
-      fd
-    );
+    const data: any = await axios.post(`http://37.148.211.32:8080/api/notes/create`, values);
+    console.log(values)
+      await axios.post(
+        `http://37.148.211.32:8080/api/pictures/upload-photo-note?noteID=${data.data.data.noteID}`,
+        fd
+      );
+      
     this.getNotlar();
     runInAction(() => {
       this.create_note = false;
