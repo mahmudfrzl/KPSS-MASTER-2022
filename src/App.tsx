@@ -8,6 +8,7 @@ import SideMenu from "./components/sideMenu/SideMenu";
 import { ComponentThatHides } from "./layers/ComponentToHide";
 import Dashboard from "./layers/Dashboard";
 
+
 // import RegLogStore from "./store/RegLogStore";
 
 const App = () => {

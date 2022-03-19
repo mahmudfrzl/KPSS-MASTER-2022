@@ -4,13 +4,13 @@ import GeneralStore from "../../../store/GeneralStore";
 import { observer } from "mobx-react-lite";
 import { useForm } from "antd/lib/form/Form";
 import { runInAction } from "mobx";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 const { Option } = Select;
 
 const UpdateCevap = () => {
   const [form] = useForm();
-  const updatedData = [
-    { key: "answerSection", label: "Cevap" },
-  ];
+  const updatedData = [{ key: "answerSection", label: "Cevap" }];
 
   useEffect(() => {
     form.setFieldsValue({
@@ -35,13 +35,21 @@ const UpdateCevap = () => {
         visible={GeneralStore.cevap_update}
       >
         <Form onFinish={GeneralStore.updateCevaplar} form={form}>
-        <label htmlFor="questionID">Soru</label>
-        <Form.Item name='questionID'>
+          <label htmlFor="questionID">Soru</label>
+          <Form.Item name="questionID">
             <Select>
-            {GeneralStore.sorular.map(d=>{
-              return <Option value={d.answerID} key={d.questionID}>{d.questionID} - {d.description}</Option>
-            })}
-
+              {GeneralStore.sorular.map((d) => {
+                return (
+                  <Option value={d.answerID} key={d.questionID}>
+                    {d.questionID} -{" "}
+                    <div
+                      style={{ width: 200 }}
+                      suppressContentEditableWarning={true}
+                      dangerouslySetInnerHTML={{ __html: d.description }}
+                    ></div>
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
           {updatedData.map((d, i) => {
@@ -49,7 +57,17 @@ const UpdateCevap = () => {
               <div key={i}>
                 <label htmlFor={d.key}>{d.label}:</label>
                 <Form.Item name={d.key}>
-                  <Input />
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={GeneralStore.cevap.answerSection}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      console.log(data);
+                      return runInAction(
+                        () => (GeneralStore.answerSection = data)
+                      );
+                    }}
+                  />
                 </Form.Item>
               </div>
             );

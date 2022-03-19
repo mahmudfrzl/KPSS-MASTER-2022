@@ -54,10 +54,12 @@ const UpdateNote = () => {
               <div key={i}>
                 <label htmlFor={d.key}>{d.label}:</label>
                 <Form.Item name={d.key}>
+                  
               
                   <CKEditor
+                    data={GeneralStore.not.noteDescription}
                     editor={ClassicEditor}
-
+                 
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       return runInAction(() => (GeneralStore.noteDescription =data ));

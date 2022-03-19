@@ -20,10 +20,9 @@ const UpdateQuestion = () => {
       testID: GeneralStore.soru.testID,
       isClosed: GeneralStore.soru.isClosed,
       status: GeneralStore.soru.status,
-
     });
   }, [GeneralStore.question_update]);
-  console.log(toJS(GeneralStore.soru.pictures))
+  console.log(toJS(GeneralStore.soru.pictures));
   return (
     <div>
       <Drawer
@@ -55,15 +54,15 @@ const UpdateQuestion = () => {
               <div key={i}>
                 <label htmlFor={d.key}>{d.label}:</label>
                 <Form.Item name={d.key}>
-              
                   <CKEditor
+                    data={GeneralStore.soru.description}
                     editor={ClassicEditor}
-
                     onChange={(event, editor) => {
                       const data = editor.getData();
-                      return runInAction(() => (GeneralStore.description =data ));
-                    }} 
-
+                      return runInAction(
+                        () => (GeneralStore.description = data)
+                      );
+                    }}
                   />
                 </Form.Item>
               </div>
@@ -93,7 +92,8 @@ const UpdateQuestion = () => {
           <label htmlFor="">Guncellenecek resim:</label>
           <Form.Item name="pictureURL">
             <Select>
-              {GeneralStore.soru.pictures&&GeneralStore.soru.pictures.length>0 ? (
+              {GeneralStore.soru.pictures &&
+              GeneralStore.soru.pictures.length > 0 ? (
                 GeneralStore.soru.pictures.map((a) => {
                   return (
                     <Select.Option value={a.pictureID}>
@@ -105,16 +105,14 @@ const UpdateQuestion = () => {
                         }
                       >
                         <Image preview={false} src={a.url} /> <br />
-               
                         <Input
-                          onChange={(e) =>{
+                          onChange={(e) => {
                             runInAction(
                               () =>
                                 (GeneralStore.image_question =
                                   e.target.files[0])
-                            )
-                          }
-                          }
+                            );
+                          }}
                           type="file"
                         />
                       </div>
@@ -124,19 +122,18 @@ const UpdateQuestion = () => {
               ) : (
                 <Select.Option value={1}>
                   <div>
-
-                  <label htmlFor="image_question">Resim guncelle:</label>
-                  <Input
-                    onChange={async(e) => {
-                      const url=`http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=${GeneralStore.soru.questionID}`
-                      const fd=new FormData();
-                      fd.append('pictureURL',e.target.files[0])
-                      await axios.post(url,fd)
-                      GeneralStore.getSorular()
-                      runInAction(()=>{})
-                    }}
-                    type="file"
-                  />
+                    <label htmlFor="image_question">Resim guncelle:</label>
+                    <Input
+                      onChange={async (e) => {
+                        const url = `http://37.148.211.32:8080/api/pictures/upload-photo-question?questionID=${GeneralStore.soru.questionID}`;
+                        const fd = new FormData();
+                        fd.append("pictureURL", e.target.files[0]);
+                        await axios.post(url, fd);
+                        GeneralStore.getSorular();
+                        runInAction(() => {});
+                      }}
+                      type="file"
+                    />
                   </div>
                 </Select.Option>
               )}

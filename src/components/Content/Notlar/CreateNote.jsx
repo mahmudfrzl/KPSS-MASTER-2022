@@ -8,6 +8,66 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 const { Option } = Select;
 
+const editorConfiguration = {
+  fontColor: {
+    colors: [
+        {
+            color: 'hsl(0, 0%, 0%)',
+            label: 'Black'
+        },
+        {
+            color: 'hsl(0, 0%, 30%)',
+            label: 'Dim grey'
+        },
+        {
+            color: 'hsl(0, 0%, 60%)',
+            label: 'Grey'
+        },
+        {
+            color: 'hsl(0, 0%, 90%)',
+            label: 'Light grey'
+        },
+        {
+            color: 'hsl(0, 0%, 100%)',
+            label: 'White',
+            hasBorder: true
+        },
+
+        // ...
+    ]
+},
+fontBackgroundColor: {
+    colors: [
+        {
+            color: 'hsl(0, 75%, 60%)',
+            label: 'Red'
+        },
+        {
+            color: 'hsl(30, 75%, 60%)',
+            label: 'Orange'
+        },
+        {
+            color: 'hsl(60, 75%, 60%)',
+            label: 'Yellow'
+        },
+        {
+            color: 'hsl(90, 75%, 60%)',
+            label: 'Light green'
+        },
+        {
+            color: 'hsl(120, 75%, 60%)',
+            label: 'Green'
+        },
+
+        // ...
+    ]
+},
+toolbar: [
+    'heading', 'bulletedList', 'numberedList', 'fontColor', 'fontBackgroundColor', 'undo', 'redo'
+]
+};
+
+
 const CreateNote = () => {
   const [form] = useForm();
   const updatedData = [
@@ -55,7 +115,7 @@ const CreateNote = () => {
               
                   <CKEditor
                     editor={ClassicEditor}
-
+                    config={editorConfiguration}
                     onChange={(event, editor) => {
                       const data = editor.getData();
                       return runInAction(() => (GeneralStore.noteDescription =data ));
