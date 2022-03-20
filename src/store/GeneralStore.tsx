@@ -35,10 +35,10 @@ class GeneralStore {
   cevap: any = {};
   cevap_create: boolean = false;
 
-  image: any = {};
+  image: any = "";
   img_id: number = 0;
 
-  image_note: any = {};
+  image_note: any = "";
 
   image_question: any = "";
   img_question_id: number = 0;
@@ -47,8 +47,14 @@ class GeneralStore {
   answerSection:any = "";
   noteDescription:any = "";
 
+  loading: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setLoading(value:boolean) {
+    return this.loading = value;
   }
 
   getDersler = async () => {
@@ -247,12 +253,15 @@ class GeneralStore {
         fd
       );
       
-    this.getNotlar();
+     this.getNotlar();
     runInAction(() => {
       this.create_note = false;
       this.image_note = {};
+     
+      
     });
-    data.data.success === true ? message.success(data.data.message) :  message.error(data.data.message) 
+    data.data.success === true ? message.success(data.data.message) :  message.error("Hata olustu") 
+    this.setLoading(false);
   };
 
   updateNot = async (values: any) => {
